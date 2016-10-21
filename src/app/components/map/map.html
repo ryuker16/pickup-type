@@ -1,0 +1,13 @@
+<sebm-google-map class="map-container" [latitude]="lat" [longitude]="lng" [zoom]="zoom"
+[disableDefaultUI]="false" [zoomControl]="false">
+
+  <sebm-google-map-marker *ngFor="let m of markers" ngbPopover="<p>You see, I show up on hover!</p>"  triggers="hover" popoverTitle="Pop title" 
+   [latitude]="m.latitude" [iconUrl]="'app/images/' + m.sport + '.png'"
+   [longitude]="m.longitude" [visible]="m.options.visible">
+    <sebm-google-map-info-window>
+      <strong><h5>{{m.title}} - {{m.date}}</h5>
+      <p>Going: {{m.going}}, Maybe Going: {{m.maybeGoing}},
+       Address: {{m.address}}, Group: {{m.title}}</p></strong>
+    </sebm-google-map-info-window>
+  </sebm-google-map-marker>
+</sebm-google-map>

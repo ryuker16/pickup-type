@@ -1,0 +1,49 @@
+<nav class="navbar navbar-dark bg-inverse fixed-top">
+  <a class="navbar-brand" href="#">PickUp Sports</a>
+<ul class="nav navbar-nav" [ngSwitch]="authStatus">
+  <li class="nav-item active" ngbDropdown >
+    <p class="nav-link" href="#" ngbDropdownToggle >Choose a Sport <span class="sr-only"></span></p>
+    <ul class="dropdown-menu">
+      <li (click)='sortSports(sport)'> Show All </li>
+      <li *ngFor="let sport of sports " (click)="sortSports(sport)"><p>{{sport}}</p></li>
+    </ul>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="#" >Link</a>
+  </li>
+
+  <li class="nav-item  pull-xs-right" *ngSwitchCase='true' >
+     <img [src]="userData.picture || '' " />
+   </li>
+  <li class="nav-item pull-xs-right " ngbDropdown *ngSwitchCase='true'  >
+   <p class="nav-link" href="#">{{userData.displayName}}</p>
+  </li>
+  <li class="nav-item pull-xs-right " *ngSwitchCase='true' placement="bottom" ngbPopover="<p>You see, I show up on hover!</p>"  triggers="hover" popoverTitle="Pop title" >
+    <p class="nav-link">Your Events<span class="sr-only"></span></p>
+    <ul class="dropdown-menu">
+      <li *ngFor="let event of userMarkers"><p>{{event.title}}</p></li>
+    </ul>
+  </li>
+  <li class="nav-item  pull-xs-right" >
+    <form  class="form-inline">
+      <input class="form-control"  type="text" placeholder="Search Events">
+    <ul class="dropdown-menu">
+      <li> </li>
+    </ul>
+    </form>
+  </li>
+
+  <li class="nav-item pull-xs-right">
+    <button type="button" class="btn btn-primary" *ngSwitchCase='false' (click)="login()">
+      login
+    </button>
+    <button type="button" class="btn btn-primary" *ngSwitchCase='true' (click)="logout()">
+      Logout
+    </button>
+  </li>
+</ul>
+
+
+</nav>
+<fountain-map [markers]='markers' > </fountain-map>

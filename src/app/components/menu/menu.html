@@ -9,17 +9,13 @@
     </ul>
   </li>
 
-  <li class="nav-item">
-    <a class="nav-link" href="#" >Link</a>
-  </li>
-
   <li class="nav-item  pull-xs-right" *ngSwitchCase='true' >
-     <img [src]="userData.picture || '' " />
+     <img [src]="userData.picture" />
    </li>
   <li class="nav-item pull-xs-right " ngbDropdown *ngSwitchCase='true'  >
-   <p class="nav-link" href="#">{{userData.displayName}}</p>
+   <p class="nav-link" >{{userData.displayName}}</p>
   </li>
-  <li class="nav-item pull-xs-right " *ngSwitchCase='true' placement="bottom" ngbPopover="<p>You see, I show up on hover!</p>"  triggers="hover" popoverTitle="Pop title" >
+  <li class="nav-item pull-xs-right " *ngSwitchCase='true'>
     <p class="nav-link">Your Events<span class="sr-only"></span></p>
     <ul class="dropdown-menu">
       <li *ngFor="let event of userMarkers"><p>{{event.title}}</p></li>

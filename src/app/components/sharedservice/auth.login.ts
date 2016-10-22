@@ -5,6 +5,20 @@ import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
 import {User} from './interfaceClass/user';
 
+/**
+
+Auth login service handles user/server authentication
+
+I use ng-ui-auth which is basically a bad copy and paste job of Satttelizer. So
+authentication is modified a bit. Login will automatically detect if your logged
+into facebook either via local storage or via another browser tab so loging in
+is automatic usually.
+
+We get the user data from database. Events made my user can be determined by
+group.id which will match the user's facebook id(as opposed to a meetup group ID)
+
+
+*/
 @Injectable()
 export class AuthLogin {
   constructor(private auth: AuthService, private http: Http) { }
@@ -46,14 +60,5 @@ export class AuthLogin {
       });
   }
 
-  link() {
-    this.auth.link('facebook')
-      .subscribe({
-        error: (err: any) => console.log(err),
-        complete: () => {
-          console.log(this.auth.getExpirationDate());
-          console.log(this.auth.getPayload());
-        }
-      });
-  }
+
 };

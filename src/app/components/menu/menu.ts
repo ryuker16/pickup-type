@@ -1,7 +1,6 @@
 import {
   Component, OnInit
 } from '@angular/core';
-//import {MapComponent} from '../map/map';
 import {MapService} from '../sharedservice/map.service';
 import {AuthLogin} from '../sharedservice/auth.login';
 import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
@@ -10,9 +9,17 @@ import {AuthService} from 'ng2-ui-auth';
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
 
+/**
+Menu component is the parent component to everything: the stateless component
+that passes data to it's stateless child components. Right now pass map data to
+map component(recieved via @Outputs).
 
-//import { Ng2ArrayPipesModule } from 'angular-pipes';
-//import {SearchArray} from '../pipes/searchField';
+Ng-Switch used to activate wether profile is shown/user logged in depending on
+authStatus variable. 
+
+Used NG2-ui-bootstrap with the bootstrap 4 css.
+*/
+
 
 @Component({
   selector: 'fountain-menu',
@@ -21,12 +28,15 @@ import {Subscriber} from 'rxjs/Subscriber';
 
 })
 export class MenuComponent implements OnInit {
-
+  // stored profile data. empty picture string required to avoid error.
   userData: any = {
     picture: ''
   };
+  // determines if user profile is shown
   authStatus: boolean = false;
   firstMarkers: [{}];
+  //google maps requires at least one marker identified before starting. Will be
+  //replaced
   markers: any = [
     {
       latitude: 36.160338,
@@ -41,20 +51,25 @@ export class MenuComponent implements OnInit {
       }
     }
   ];
+  //user markers to list in profile.
   userMarkers: any;
+  // list of sports
   sports = this.mapService.listSports;
 
   constructor(private mapService: MapService, private authLogin: AuthLogin) {
   }
 
+  ngOnInit() {
+    this.setAuth();
+    this.setMarkersFirst();
+  };
+
+
   login() {
     this.authLogin.loginFacebook()
       .subscribe({
         next: (value: any) => {
-          //set to local storage
           localStorage.setItem('facebookId', value.facebook.id);
-
-          //console.log(value.facebook.name);
         },
         error: (err: any) => console.log(err),
         complete: () => {
@@ -69,13 +84,16 @@ export class MenuComponent implements OnInit {
     this.authStatus = false;
     localStorage.clear();
   }
-
+  //checks to see if user is logged in already onInit, will get his data if so.
   setAuth() {
     if (this.authLogin.authorized()) {
       this.authStatus = true;
       this.authLogin.getUser(localStorage.getItem('facebookId') || this.userData.id)
         .subscribe(
-        value => { this.userData = value[0]; console.log(this.userData) },
+        value => {
+          this.userData = value[0];
+          console.log(this.userData)
+        },
         error => (err) => console.log(err)
         )
       console.log('Authorized already');
@@ -84,7 +102,7 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  //get User Made events and/or refresh events
+  //idenfify User Made events and/or refresh events
   setMarkers(userId?: string): void {
     this.mapService.getMapData()
       .then(
@@ -102,7 +120,7 @@ export class MenuComponent implements OnInit {
       })
   };
 
-  // Get Markers for all sports once and set original marker events
+  // Get Markers for all sports once and set original marker events for reference
   setMarkersFirst(sports?: string[]) {
     this.mapService.getMapData(sports)
       .then(
@@ -113,12 +131,8 @@ export class MenuComponent implements OnInit {
   };
 
 
-  ngOnInit() {
-    this.setAuth();
-    this.setMarkersFirst();
-  };
 
-  //find my sports by name and sort map
+  //find my sports by name and sort map; doesn't make database call.
   sortSports(sports?: string) {
 
     for (var i in this.markers) {

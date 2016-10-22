@@ -1,8 +1,26 @@
+/**
+Main module for the app
+Uses only one route right now(routes.ts)
+
+Components:
+map component: does the map, child of menu
+menu component: parent component makes menu, passes data to map
+
+pipes: not active yet,
+
+shared services: contains the services for app: map serivce, auth.user,
+auth login serviceand interfaces(interfaceClass).
+ I was lazy on implementing interfaceClasses so not many are used yet.
+
+
+
+*/
+
+
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {routing, RootComponent} from './routes';
 import {AgmCoreModule } from 'angular2-google-maps/core';
-// import {HelloComponent} from './hello';
 import {FormsModule } from '@angular/forms';
 import {MapComponent} from './components/map/map';
 import {HttpModule, JsonpModule } from '@angular/http';

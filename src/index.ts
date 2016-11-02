@@ -5,7 +5,7 @@ import 'zone.js/dist/zone';
 
 import '@angular/common';
 import 'rxjs';
-
+import './app/css/bootstrap.min.css';
 import './index.css';
 
 import {enableProdMode} from '@angular/core';

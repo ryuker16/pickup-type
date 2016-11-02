@@ -1,4 +1,14 @@
-pickuptype
+
+Pickup-type is an Angular 2/typescript conversion of the original Angular 1.5 version for Pick Up sports. Still a work in progress about 93% complete.
+
+Current preview version here : http://52.11.14.57:4000/
+
+
+
+
+
+
+--Install instructions for team members below --
 
 main module is app/index.ts.
 

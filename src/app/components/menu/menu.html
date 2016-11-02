@@ -2,44 +2,45 @@
   <a class="navbar-brand" href="#">PickUp Sports</a>
 <ul class="nav navbar-nav" [ngSwitch]="authStatus">
   <li class="nav-item active" ngbDropdown >
-    <p class="nav-link" href="#" ngbDropdownToggle >Choose a Sport <span class="sr-only"></span></p>
-    <ul class="dropdown-menu">
-      <li (click)='sortSports(sport)'> Show All </li>
-      <li *ngFor="let sport of sports " (click)="sortSports(sport)"><p>{{sport}}</p></li>
+    <p class="nav-link" ngbDropdownToggle >Choose a Sport <span class="sr-only"></span></p>
+    <ul class="dropdown-menu ">
+      <h6  class="dropdown-header" (click)='sortSports(sport)'> Show All </h6>
+      <li class="dropdown-item" *ngFor="let sport of sports;" (click)="sortSports(sport)"><p>{{sport}}</p></li>
     </ul>
   </li>
 
-  <li class="nav-item  pull-xs-right" *ngSwitchCase='true' >
-     <img [src]="userData.picture" />
-   </li>
-  <li class="nav-item pull-xs-right " ngbDropdown *ngSwitchCase='true'  >
-   <p class="nav-link" >{{userData.displayName}}</p>
-  </li>
-  <li class="nav-item pull-xs-right " *ngSwitchCase='true'>
-    <p class="nav-link">Your Events<span class="sr-only"></span></p>
-    <ul class="dropdown-menu">
-      <li *ngFor="let event of userMarkers"><p>{{event.title}}</p></li>
-    </ul>
-  </li>
-  <li class="nav-item  pull-xs-right" >
-    <form  class="form-inline">
-      <input class="form-control"  type="text" placeholder="Search Events">
-    <ul class="dropdown-menu">
-      <li> </li>
-    </ul>
-    </form>
-  </li>
 
-  <li class="nav-item pull-xs-right">
-    <button type="button" class="btn btn-primary" *ngSwitchCase='false' (click)="login()">
-      login
-    </button>
-    <button type="button" class="btn btn-primary" *ngSwitchCase='true' (click)="logout()">
-      Logout
-    </button>
-  </li>
+  <form ngbDropdown #search="ngbDropdown"  class="form-inline  pull-lg-right">
+    <li class="nav-item  float-lg-right" *ngSwitchCase='true' >
+       <img [src]="userData.picture ? userData.picture : '' " />
+     </li>
+    <li class="nav-item float-xs-right "*ngSwitchCase='true'  >
+     <p class="nav-link" >{{userData.displayName}}</p>
+    </li>
+    <li class="nav-item float-xs-right " ngbDropdown  *ngSwitchCase='true'>
+      <p class="nav-link">Your Events<span class="sr-only"></span></p>
+      <ul class="dropdown-menu">
+        <li class="dropdown-item" *ngFor="let event of userMarkers"><p>{{event.title}}</p></li>
+      </ul>
+    </li>
+    <input #searchBar class="form-control nav-item" autocomplete="on" pattern="^[a-zA-Z0-9]+$"  type="search" (keyup)="searchSports($event); search.open();$event.stopPropagation();" placeholder="Search Events">
+  <ul class="dropdown-menu ">
+    <li class="dropdown-item" *ngFor="let events of returnedEvents;" >{{events.name}} <br> {{events.time | date:"short"}} </li>
+  </ul>
+  <button type="button" class="btn btn-primary nav-item" (click)="authStatus ? open() : login()">
+    Make New Game
+  </button>
+  <button type="button" class="btn btn-primary nav-item" *ngSwitchCase='false' (click)="login()">
+    login
+  </button>
+  <button type="button" class="btn btn-primary nav-item" *ngSwitchCase='true' (click)="logout()">
+    Logout
+  </button>
+  </form>
+
 </ul>
 
 
 </nav>
+<template ngbModalContainer></template>
 <fountain-map [markers]='markers' > </fountain-map>

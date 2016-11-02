@@ -2,14 +2,20 @@
 [disableDefaultUI]="false" [zoomControl]="false">
 
 
+  <sebm-google-map-marker *ngFor="let m of markers; let i = index"
+   [latitude]="m.venue.lat" [iconUrl]="m.sport ? 'app/images/' + m.sport + '.png' : 'app/images/sport.png'"
+   [longitude]="m.venue.lon" (markerClick)="open(m)" [visible]="m.options.visible" [id]="i"
+  >
+  <sebm-google-map-info-window>
+   <h5>{{m.name}} - {{m.time | date: 'short'}}</h5>
+   <strong><p>Going: {{m.yes_rsvp_count}}, Maybe Going: {{m.maybe_rsvp_count}},
+    Address: {{m.venue?.address_1}}, Group: {{m.group?.name}}</p></strong>
+    <span *ngIf="m.rsvp_sample" class="image-info-window">
+      <img *ngFor='let b of m.rsvp_sample;'  class="image-window" [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
+    </span>
 
-  <sebm-google-map-marker *ngFor="let m of markers"
-   [latitude]="m.latitude" [iconUrl]="'app/images/' + m.sport + '.png'"
-   [longitude]="m.longitude" [visible]="m.options.visible">
-    <sebm-google-map-info-window>
-      <strong><h5>{{m.title}} - {{m.date}}</h5>
-      <p>Going: {{m.going}}, Maybe Going: {{m.maybeGoing}},
-       Address: {{m.address}}, Group: {{m.title}}</p></strong>
-    </sebm-google-map-info-window>
+ </sebm-google-map-info-window>
+
   </sebm-google-map-marker>
+
 </sebm-google-map>

@@ -16,12 +16,24 @@ module.exports = {
         ]
       },
       {
+          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+          loader: 'url-loader?limit=100000'
+      },
+      {
         test: /\.css$/,
         loaders: ExtractTextPlugin.extract({
           fallbackLoader: 'style',
           loader: 'css?minimize!!postcss'
         })
       },
+      // {
+      //   test: /\.css$/,
+      //   loaders: [
+      //     'style',
+      //     'css',
+      //     'postcss'
+      //   ]
+      // },
       {
         test: /\.ts$/,
         exclude: /node_modules/,

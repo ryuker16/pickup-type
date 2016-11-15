@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input
+  Component, OnInit, Output, Input, EventEmitter
 } from '@angular/core';
 import {user} from '../sharedservice/interfaceClass/user';
 import {marker} from '../sharedservice/interfaceClass/marker';
@@ -72,32 +72,26 @@ max-height: 45px;
 export class MapComponent {
 
   @Input() markers: marker.MapMarker;
+  @Input() userInfo: user.UserProfile;
 
+  //@Output() openMarker = new EventEmitter();
+  //open modal for marker event with passed in data
+  //normally would trigger on parent via output but
+  // since NG2 bootstrap uses a template, it's problematic.
   open(data: marker.MapMarker) {
-    const modalRef = this.modalService.open(EventComponent);
-    modalRef.componentInstance.model = data;
+    let modalEvent = this.modalService.open(EventComponent);
+    modalEvent.componentInstance.model = data;
+    modalEvent.componentInstance.userInfo = this.userInfo;
   }
+
   constructor(
     private modalService: NgbModal) {
   }
 
-
-  // constructor(mapEle: Element, markers, mapType: string) {
-  //   let marker: Array<marker.mapMarker> = markers;
-  //   let lats = []
-  //   let longs = [];
-  //   var center: number[];
-  //   marker.map((value) => {
-  //     lats.push(value.venue.lat);
-  //     longs.push(value.venue.lon);
-  //   });
-  //
-  // }
-
-  //@Input() sports: string[];
-
   // default map settings - there are many more options availible
+  // set to nashville now, will default to user location anywhere in future
   //https://ng2map.github.io/#/google-map
+
   lat: number = 36.160338;
   lng: number = -86.778780;
   zoom: number = 12;

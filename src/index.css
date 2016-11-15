@@ -1,7 +1,6 @@
 body {
   background-color: lightgrey;
 }
-
 .pac-container {
     z-index: 1051 !important;
 }

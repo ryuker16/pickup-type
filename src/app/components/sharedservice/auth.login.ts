@@ -1,6 +1,6 @@
 import {Injectable} from "@Angular/core";
 import {AuthService} from 'ng2-ui-auth';
-import { Http, Response } from '@angular/http';
+import {Http, Response } from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
 import {user} from './interfaceClass/user';

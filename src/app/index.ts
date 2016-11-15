@@ -5,15 +5,15 @@ Uses only one route right now(routes.ts)
 Components:
 map component: does the map, child of menu
 menu component: parent component makes menu, passes data to map
-
+make component: make modal for events making
+event component: pop up modal for showing events results of marker clicks
 pipes: not active yet,
 
 shared services: contains the services for app: map serivce, auth.user,
-auth login serviceand interfaces(interfaceClass).
- I was lazy on implementing interfaceClasses so not many are used yet.
+auth login, service and interfaces.
 
-
-
+sharedclass(within sharedservices folder): ironically named, contains interfaces not included with typings
+such as marker(handles map events) and user(for user profiles)
 */
 
 

@@ -1,5 +1,9 @@
 
-Pickup-type is an Angular 2/typescript conversion of the original Angular 1.5 version for Pick Up sports. Still a work in progress about 93% complete.
+Pickup-type is an Angular 2/typescript conversion of the original Angular 1.5 version for Pick Up sports. Still a work in progress about 85% complete.
+
+
+Progress:
+Derek currently handling menus, will is finishing up form submission.
 
 Current preview version here : http://52.11.14.57:4000/
 

@@ -1,3 +1,5 @@
+import {marker} from './marker';
+
 export namespace user {
 
   export interface Summary {
@@ -20,6 +22,7 @@ export namespace user {
     lastName: string;
     friends?: Friend[];
     __v?: number;
+    userEvents?: Array<marker.MapMarker>;
   }
 
 }

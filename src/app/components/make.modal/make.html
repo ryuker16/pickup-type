@@ -5,57 +5,67 @@
     </button>
     <h4 class="modal-title">Make a new Event</h4>
   </div>
-
+  <form [formGroup]="eventForm" (ngSubmit)="submitForm(eventForm.value)" >
   <div class="modal-body">
+    <div *ngIf="formSubmitted">
+    <h3 > Your Event was created! </h3>
+  </div>
+  <div *ngIf="!formSubmitted">
     <p> Please supply details to create event </p>
-    <form #event >
   <div class="form-group">
     <label for="Title">Title of your Event</label>
-    <input type="text" class="form-control" id="Title">
+    <input type="text"  formControlName="title" name="Title" class="form-control" id="Title">
     <small id="TitleHelp" class="form-text text-muted">Include your sport</small>
  </div>
  <div class="form-group">
    <label for="description">Description</label>
-   <textarea  type="text" class="form-control" id="description"></textarea>
+   <textarea  type="text"  formControlName="description"  class="form-control" id="description"></textarea>
    <small id="descriptionHelp" class="form-text text-muted"></small>
 </div>
 <div class="form-inline">
 <div class="form-group">
   <label for="email">Email</label>
-  <input type="email" class="form-control" id="email">
+  <input type="email"   formControlName="email" class="form-control" id="email">
   <small id="emailhelp" class="form-text text-muted">Mandatory</small>
 </div>
 <div class="form-group">
   <label for="phone">Phone</label>
-  <input type="tel" class="form-control" id="phone">
+  <input type="tel"  formControlName="phone" class="form-control" id="phone">
   <small id="phoneHelp" class="form-text text-muted">Optional</small>
 </div>
 </div>
 <div class="form-inline">
 <div class="form-group">
-  <label for="date">Start time</label>
-  <input type="datetime-local" class="form-control" id="date">
+  <label for="dateForm">Start time</label>
+  <input type="datetime-local"   formControlName="startTime"  class="form-control" id="dateForm">
   <small id="dateHelp" class="form-text text-muted"></small>
 </div>
 <div class="form-group">
   <label for="duration">Duration</label>
-  <input type="text" class="form-control" id="duration">
+  <input type="text"  formControlName="duration"class="form-control" id="duration">
   <small id="durationHelp" class="form-text text-muted"></small>
 </div>
 </div>
 <div class="form-group">
-  <label for="">Choose a Sport</label>
-  <select class="form-control" id="chooseSport">
-    <option *ngFor="let sport of sports; let i of index;">{{sport}}</option>
+  <label for="chooseSport">Choose a Sport</label>
+  <select class="form-control"  formControlName="chooseSport" id="chooseSport">
+    <option *ngFor="let sport of sports;" [ngValue]="sport">{{sport}}</option>
     </select>
 </div>
 <div class="form-group">
   <label for="searchPlace">Location</label>
-  <input type="text" placeholder="type address"  autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" id="location" #searchPlace [formControl]="searchLocation">
+  <input type="text"  formControlName="searchPlace" placeholder="address" autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control"  #searchPlace >
 </div>
-  </form>
+<div class="form-group">
+  <label for="locationHelp">How to find you at location</label>
+  <input type="text"  formControlName="locationHelp" class="form-control" id="locationHelp">
+  <small id="locationHelpInfo" class="form-text text-muted">Optional, additional location help</small>
+</div>
+</div>
       </div>
 
   <div class="modal-footer">
+      <button type="submit" class="btn btn-secondary" *ngIf="!formSubmitted" >Make Event</button>
     <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
   </div>
+      </form>

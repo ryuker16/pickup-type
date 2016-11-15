@@ -1,22 +1,64 @@
-
-  <div class="modal-header">
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+<div class="modal-header">
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title">{{model.name}}</h4>
-  </div>
+  <h4 class="modal-title">{{model.name}}</h4>
+</div>
 
-  <div class="modal-body">
-      <div class="row">
-    <div class="col-md-6">Address: {{model.address}}<br>
-    City: {{model.venue.city}}<br> Venue: {{model.venue.name}}<br>Event Host: {{model.group.name}}<br>
-    Going: {{model.yes_rsvp_count}}<br>Maybe Going: {{model.maybe_rsvp_count}}<br>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6">
+      <p>Address: <a  target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon">{{model.venue.address_1}}</a>
+      <br>City: {{model.venue.city}}
+      <br>Venue: {{model.venue.name}}<br></p>
+      <h6>Host: {{model.group.name}}</h6>
+
+      <img class="img-fluid" [src]="model.group.group_photo ? model.group.group_photo.thumb_link :  ''">
+
     </div>
-    <div class="col-md-6">Type:{{model.sport}}<br> Time:{{model.time | date: "short"}}<br>
-    Group: {{model.group.name}} <br>Url: <a [href]='model.event_url'>{{model.event_url}}</a><br></div>
-    </div><br> <br>
-    <div [innerHTML]='model.description'></div>
+    <div class="col-md-6"><p>Type:{{model.sport}}<br> Time: {{model.time | date: "short"}}
+      <br>Group: {{model.group.name}}
+      <br>Created: {{model.created | date: "short"}}
+      <br>Going: {{model.yes_rsvp_count}}<br>Maybe Going: {{model.maybe_rsvp_count}}<br>
+    </p>
     </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
   </div>
+  <div></div>
+  <span *ngIf="model.rsvp_sample" class="image-info-window">
+        <img *ngFor='let b of model.rsvp_sample;'  class="image-window" [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
+      </span>
+  <div></div>
+  <div></div>
+  <div class="row">
+
+    <a target="_blank" [href]="model.event_url" ><button type="button" *ngIf="model.group.who !== 'facebook';" class="btn btn-danger btn-lg btn-block">  MeetUp.com Event - RSVP at MeetUp.com</button> </a>
+
+    <a target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon"><button type="button" *ngIf="model.group.who !== 'facebook';"  class="btn btn-primary btn-lg btn-block">Google Map Directions</button></a>
+
+    <div class="col-md-12" *ngIf="model.group.who == 'facebook';">
+      <div class="btn-group" data-toggle="buttons">
+        <button type="button" class="btn btn-primary"
+         (click)='joinEvent(false, model.id)'>Join</button>
+        <button type="button" class="btn btn-primary"
+         (click)='leaveEvent(false, model.id)'>leave</button>
+        <button type="button" class="btn btn-primary"
+          (click)='joinEvent(true, model.id)'>Maybe Going</button>
+         <button type="button" class="btn btn-primary"
+         *ngIf="model.group.facebookId == userInfo.facebook;"
+          (click)='deleteEvent(model.id)'
+         >Delete</button>
+         <a  target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/'
+          + model.venue.lat + ',' + model.venue.lon"><button type="button" class="btn btn-primary" >Google Map Directions</button></a>
+
+      </div>
+
+    </div>
+
+  </div>
+  <br>
+  <div [innerHTML]='model.description'></div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="activeModal.close('Close click')">Close</button>
+</div>

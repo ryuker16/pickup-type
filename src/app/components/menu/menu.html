@@ -8,8 +8,6 @@
       <li class="dropdown-item" *ngFor="let sport of sports;" (click)="sortSports(sport)"><p>{{sport}}</p></li>
     </ul>
   </li>
-
-
   <form ngbDropdown #search="ngbDropdown"  class="form-inline  pull-lg-right">
     <li class="nav-item  float-lg-right" *ngSwitchCase='true' >
        <img [src]="userData.picture ? userData.picture : '' " />
@@ -18,14 +16,34 @@
      <p class="nav-link" >{{userData.displayName}}</p>
     </li>
     <li class="nav-item float-xs-right " ngbDropdown  *ngSwitchCase='true'>
-      <p class="nav-link">Your Events<span class="sr-only"></span></p>
+      <p class="nav-link" ngbDropdownToggle >Your Events<span class="sr-only"></span></p>
       <ul class="dropdown-menu">
-        <li class="dropdown-item" *ngFor="let event of userMarkers"><p>{{event.title}}</p></li>
+        <h5 class="dropdown-header">Created</h5>
+        <li class="dropdown-item" *ngFor="let event of userMarkers" (click)="openEvent(event)">
+          <h5>{{event.name}}</h5>
+          <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br>
+          Address: {{event.venue.address_1}}
+          </p>
+        </li>
+        <h5 class="dropdown-header">Attending</h5>
+        <li class="dropdown-item" *ngFor="let event of userAttending" (click)="openEvent(event)">
+          <h5>{{event.name}}</h5>
+          <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br>
+          Address: {{event.venue.address_1}}
+          </p>
+        </li>
+        <h5 class="dropdown-header">Maybe Going</h5>
+        <li class="dropdown-item" *ngFor="let event of userMaybe" (click)="openEvent(event)">
+          <h5>{{event.name}}</h5>
+          <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br>
+          Address: {{event.venue.address_1}}
+          </p>
+        </li>
       </ul>
     </li>
     <input #searchBar class="form-control nav-item" autocomplete="on" pattern="^[a-zA-Z0-9]+$"  type="search" (keyup)="searchSports($event); search.open();$event.stopPropagation();" placeholder="Search Events">
   <ul class="dropdown-menu ">
-    <li class="dropdown-item" *ngFor="let events of returnedEvents;" >{{events.name}} <br> {{events.time | date:"short"}} </li>
+    <li class="dropdown-item" *ngFor="let events of returnedEvents;" (click)="openEvent(events)">{{events.name}} <br> {{events.time | date:"short"}} </li>
   </ul>
   <button type="button" class="btn btn-primary nav-item" (click)="authStatus ? open() : login()">
     Make New Game
@@ -42,5 +60,5 @@
 
 
 </nav>
-<template ngbModalContainer></template>
-<fountain-map [markers]='markers' > </fountain-map>
+<template ngbModalContainer ></template>
+<fountain-map [markers]='markers' [userInfo]='userData'> </fountain-map>

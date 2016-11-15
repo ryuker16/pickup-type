@@ -7,6 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {user} from '../sharedservice/interfaceClass/user';
 import {marker} from '../sharedservice/interfaceClass/marker';
 import {MakeComponent} from '../make.modal/make';
+import {EventComponent} from '../event.modal/event';
 import {AuthService} from 'ng2-ui-auth';
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
@@ -30,7 +31,7 @@ Used NG2-ui-bootstrap with the bootstrap 4 css.
   template: require('./menu.html'),
 })
 export class MenuComponent implements OnInit {
-  // stored profile data. empty picture string required to avoid error.
+  // stored profile data.
   userData: user.UserProfile;
   // authStatus state determines if user profile is shown; false for no
   authStatus: boolean = false;
@@ -39,15 +40,19 @@ export class MenuComponent implements OnInit {
   //google maps requires at least one marker identified before starting. Will be
   //replaced
   //markers: Array<marker.MapMarker>;
-  markers: any = [fakeEvent];
+  markers: Array<marker.MapMarker> = [fakeEvent];
 
   // search markers and push matches here
 
   returnedEvents: Array<marker.MapMarker> = [];
 
-  //user markers to list in profile.
+  //user made markers to list in profile.
   userMarkers: Array<marker.MapMarker>;
-  // list of sports
+  //user attending event markers to list in profile.
+  userAttending: Array<marker.MapMarker>;
+  //user maybe attending markers to list in profile.
+  userMaybe: Array<marker.MapMarker>;
+  //list of sports
   sports = this.mapService.listSports.sort();
 
   constructor(private mapService: MapService, private authLogin: AuthLogin,
@@ -59,11 +64,19 @@ export class MenuComponent implements OnInit {
     this.setMarkersFirst();
   };
 
-  // open my modal!
+  // open my modal for making events!
   open() {
-    this.modalService.open(MakeComponent);
-    //modalRef.componentInstance.name = 'World';
+    let modal = this.modalService.open(MakeComponent);
+    modal.componentInstance.userInfo = this.userData;
   }
+  //open user interacted/created events from drop down
+  openEvent(data: marker.MapMarker) {
+    let modalEvent = this.modalService.open(EventComponent);
+    modalEvent.componentInstance.model = data;
+    modalEvent.componentInstance.userInfo = this.userData;
+  }
+
+
 
   // login via authLogin Service
   login(): void {
@@ -89,13 +102,14 @@ export class MenuComponent implements OnInit {
   //checks to see if user is logged in already onInit, will get his data if so.
   setAuth(): void {
     if (this.authLogin.authorized()) {
-
       this.authLogin.getUser(localStorage.getItem('facebookId') ||
         this.userData.facebook)
         .subscribe({
           next: (value) => {
             this.userData = value[0];
             console.log(this.userData);
+            //set user events
+            this.setMarkers(this.userData.facebook);
           },
           error: (err: any) => console.log(err),
           complete: () => {
@@ -109,23 +123,36 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  //idenfify User Made events and/or refresh events
-  setMarkers(userId?: string): void {
-    this.mapService.getMapData()
-      .subscribe(
-      value => {
-        this.markers = value;
-        if (userId) {
-          let faceId: number = parseInt(userId, 20);
-          for (var i in value) {
-            let newUserMarkers;
-            if (value[i].group.id == faceId) {
-              newUserMarkers.push(value[i]);
-            }
-            this.userMarkers = newUserMarkers;
-          }
+  //idenfify User Made events or user attending/maybe going events
+
+  setMarkers(userId: string): void {
+    // return first user match value/object
+    let findGoing = (element: marker.RsvpSample) => {
+      return element.member.facebookId == userId
+    };
+
+    let newMaybeMarkers: Array<marker.MapMarker> = [];
+    let newAttendingMarkers: Array<marker.MapMarker> = [];
+    let newUserMarkers: Array<marker.MapMarker> = [];
+
+    for (var i in this.markers) {
+      if (this.markers[i].group.facebookId == userId) {
+        //console.log(this.markers[i].group.facebookId);
+        newUserMarkers.push(this.markers[i]);
+      } else {
+        let attending: any = this.markers[i].rsvp_sample.find(findGoing);
+        if (attending !== undefined && attending.maybe_going == false) {
+          newAttendingMarkers.push(this.markers[i]);
+        } else if (attending !== undefined && attending.maybe_going == true) {
+          newMaybeMarkers.push(this.markers[i]);
         }
-      })
+      }
+    }
+    this.userMarkers = newUserMarkers;
+    this.userAttending = newAttendingMarkers;
+    this.userMaybe = newMaybeMarkers;
+
+    console.log('User Events: ' + this.userMarkers);
   };
 
   // Get Markers for all sports once and set original marker events for reference

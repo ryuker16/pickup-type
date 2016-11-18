@@ -68,7 +68,7 @@ export class MapService {
     let sportChoices: string[] = chosen !== undefined ? chosen : sports;
 
     // returns all we need to to make googe map markers and populate out menus
-    return this.http.get('http://52.11.14.57:4000/api/events')
+    return this.http.get('http://localhost:4000/api/events')
       .map((result: Response) => {
         let finalArray = result.json();
         // this looks od but makes sense; RxJS map

@@ -74,8 +74,10 @@ export class MenuComponent implements OnInit {
     let modalEvent = this.modalService.open(EventComponent);
     modalEvent.componentInstance.model = data;
     modalEvent.componentInstance.userInfo = this.userData;
+    modalEvent.componentInstance.status = this.authStatus;
+    modalEvent.componentInstance.login = this.login();
+    console.log("recieved data from open event Modal");
   }
-
 
 
   // login via authLogin Service

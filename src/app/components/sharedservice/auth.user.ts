@@ -3,7 +3,7 @@ import {Injectable} from "@Angular/core";
 
 @Injectable()
 export class AuthUser extends CustomConfig {
-  baseUrl = 'http://52.11.14.57:4000/';
+  baseUrl = 'http://localhost:4000/';
   tokenRoot = null;
   unlinkUrl = '/auth/unlink/';
   tokenName = 'token';

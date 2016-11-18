@@ -43,7 +43,7 @@ export class AuthLogin {
   }
 
   getUser(facebookId: string): Observable<any> {
-    return this.http.get(`http://52.11.14.57:4000/api/me/?id=${facebookId}`)
+    return this.http.get(`http://localhost:4000/api/me/?id=${facebookId}`)
       .map(this.extractData)
       .catch((err: any) => { console.log('error with http request getuser'); return err });
   }

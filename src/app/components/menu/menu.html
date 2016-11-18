@@ -10,7 +10,7 @@
   </li>
   <form ngbDropdown #search="ngbDropdown"  class="form-inline  pull-lg-right">
     <li class="nav-item  float-lg-right" *ngSwitchCase='true' >
-       <img [src]="userData.picture ? userData.picture : '' " />
+       <img [src]="userData ? userData.picture : '' " />
      </li>
     <li class="nav-item float-xs-right "*ngSwitchCase='true'  >
      <p class="nav-link" >{{userData.displayName}}</p>
@@ -61,4 +61,4 @@
 
 </nav>
 <template ngbModalContainer ></template>
-<fountain-map [markers]='markers' [userInfo]='userData'> </fountain-map>
+<fountain-map [markers]='markers' [userInfo]='userData' [status]='authStatus' (openModalNow)='openEvent($event)'> </fountain-map>

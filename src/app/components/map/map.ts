@@ -73,16 +73,25 @@ export class MapComponent {
 
   @Input() markers: marker.MapMarker;
   @Input() userInfo: user.UserProfile;
+  @Input() status: boolean;
+  @Output() openModal: EventEmitter<any> = new EventEmitter();
+
+
+
+  //trigger on parent component menu to launch modal using Output
+  // helps with communication with Bootstrap modal internal components
+  openModalNow(data: marker.MapMarker) {
+    this.openModal.emit(data);
+    console.log(data + 'event emitted at map modal');
+  }
+
 
   //@Output() openMarker = new EventEmitter();
-  //open modal for marker event with passed in data
-  //normally would trigger on parent via output but
-  // since NG2 bootstrap uses a template, it's problematic.
-  open(data: marker.MapMarker) {
-    let modalEvent = this.modalService.open(EventComponent);
-    modalEvent.componentInstance.model = data;
-    modalEvent.componentInstance.userInfo = this.userInfo;
-  }
+  // open(data: marker.MapMarker) {
+  //   let modalEvent = this.modalService.open(EventComponent);
+  //   modalEvent.componentInstance.model = data;
+  //   modalEvent.componentInstance.userInfo = this.userInfo;
+  // }
 
   constructor(
     private modalService: NgbModal) {

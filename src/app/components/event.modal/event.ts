@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {marker} from '../sharedservice/interfaceClass/marker';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {user} from '../sharedservice/interfaceClass/user';
@@ -9,13 +9,16 @@ import {MapService} from '../sharedservice/map.service';
 @Component({
   selector: 'modal-event',
   template: require('./event.html')
-
 })
 export class EventComponent {
   constructor(public activeModal: NgbActiveModal, private mapService: MapService) {
   }
   @Input() model: marker.MapMarker;
   @Input() userInfo: user.UserProfile;
+  @Input() status: boolean;
+  //@Output() LogInNow = new EventEmitter();
+
+
 
   makeMember(maybe?: boolean) {
 

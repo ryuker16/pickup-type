@@ -38,13 +38,13 @@
     <div class="col-md-12" *ngIf="model.group.who == 'facebook';">
       <div class="btn-group" data-toggle="buttons">
         <button type="button" class="btn btn-primary"
-         (click)='joinEvent(false, model.id)'>Join</button>
+         (click)='status ? joinEvent(false, model.id): login()'>Join</button>
         <button type="button" class="btn btn-primary"
-         (click)='leaveEvent(false, model.id)'>leave</button>
+         (click)='status ? leaveEvent(false, model.id): login()'>leave</button>
         <button type="button" class="btn btn-primary"
-          (click)='joinEvent(true, model.id)'>Maybe Going</button>
+          (click)='status ? joinEvent(true, model.id): login() '>Maybe Going</button>
          <button type="button" class="btn btn-primary"
-         *ngIf="model.group.facebookId == userInfo.facebook;"
+         *ngIf="status ? model.group.facebookId == userInfo.facebook : false"
           (click)='deleteEvent(model.id)'
          >Delete</button>
          <a  target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/'

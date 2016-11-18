@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import {MapService} from '../sharedservice/map.service';
 import {AuthLogin} from '../sharedservice/auth.login';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {user} from '../sharedservice/interfaceClass/user';
 import {marker} from '../sharedservice/interfaceClass/marker';
 import {MakeComponent} from '../make.modal/make';
@@ -71,11 +71,34 @@ export class MenuComponent implements OnInit {
   }
   //open user interacted/created events from drop down
   openEvent(data: marker.MapMarker) {
-    let modalEvent = this.modalService.open(EventComponent);
-    modalEvent.componentInstance.model = data;
-    modalEvent.componentInstance.userInfo = this.userData;
-    modalEvent.componentInstance.status = this.authStatus;
-    modalEvent.componentInstance.login = this.login();
+    var modalEvent;
+    if (data.group.who == 'facebook') {
+      this.mapService.getEvent(data.id)
+        .subscribe({
+          next: (value) => {
+            modalEvent = this.modalService.open(EventComponent);
+            modalEvent.componentInstance.model = value[0];
+            modalEvent.componentInstance.userInfo = this.userData;
+            modalEvent.componentInstance.status = this.authStatus;
+            modalEvent.componentInstance.login = this.login;
+            modalEvent.componentInstance.setMarkersFirst = this.setMarkersFirst;
+            console.log(value[0]);
+          },
+          error: (err: any) => console.log(err),
+          complete: () => {
+            console.log('Event data recieved to modal');
+          }
+
+        })
+
+    } else {
+      modalEvent = this.modalService.open(EventComponent);
+      modalEvent.componentInstance.model = data;
+      modalEvent.componentInstance.userInfo = this.userData;
+      modalEvent.componentInstance.status = this.authStatus;
+      modalEvent.componentInstance.login = this.login;
+      modalEvent.componentInstance.setMarkersFirst = this.setMarkersFirst;
+    }
     console.log("recieved data from open event Modal");
   }
 
@@ -87,10 +110,12 @@ export class MenuComponent implements OnInit {
         next: (value) => {
           console.log(value);
           localStorage.setItem('facebookId', value.facebook.id);
+          this.setMarkers(value.facebook.id);
         },
         error: (err: any) => console.log(err),
         complete: () => {
           this.setAuth();
+
           console.log('Logged IN');
         }
       })
@@ -111,7 +136,6 @@ export class MenuComponent implements OnInit {
             this.userData = value[0];
             console.log(this.userData);
             //set user events
-            this.setMarkers(this.userData.facebook);
           },
           error: (err: any) => console.log(err),
           complete: () => {
@@ -138,15 +162,19 @@ export class MenuComponent implements OnInit {
     let newUserMarkers: Array<marker.MapMarker> = [];
 
     for (var i in this.markers) {
-      if (this.markers[i].group.facebookId == userId) {
-        //console.log(this.markers[i].group.facebookId);
-        newUserMarkers.push(this.markers[i]);
-      } else {
-        let attending: any = this.markers[i].rsvp_sample.find(findGoing);
-        if (attending !== undefined && attending.maybe_going == false) {
-          newAttendingMarkers.push(this.markers[i]);
-        } else if (attending !== undefined && attending.maybe_going == true) {
-          newMaybeMarkers.push(this.markers[i]);
+
+      //console.log(this.markers[i]);
+      if (this.markers[i].group.who == 'facebook') {
+        if (this.markers[i].group.facebookId === userId) {
+
+          newUserMarkers.push(this.markers[i]);
+        } else {
+          let attending: any = this.markers[i].rsvp_sample.find(findGoing);
+          if (attending !== undefined && attending.maybe_going == false) {
+            newAttendingMarkers.push(this.markers[i]);
+          } else if (attending !== undefined && attending.maybe_going == true) {
+            newMaybeMarkers.push(this.markers[i]);
+          }
         }
       }
     }
@@ -164,10 +192,16 @@ export class MenuComponent implements OnInit {
         next: (value) => {
           this.markers = value;
           this.firstMarkers = value;
+
           console.log(value);
         },
         error: (err: any) => console.log(err),
-        complete: () => console.log('values should be retrieved')
+        complete: () => {
+          console.log('values should be retrieved');
+          if (this.authStatus && this.userData) {
+            this.setMarkers(this.userData.facebook);
+          }
+        }
       })
   };
   searchSports(event: any) {

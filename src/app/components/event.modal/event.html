@@ -40,7 +40,7 @@
         <button type="button" class="btn btn-primary"
          (click)='status ? joinEvent(false, model.id): login()'>Join</button>
         <button type="button" class="btn btn-primary"
-         (click)='status ? leaveEvent(false, model.id): login()'>leave</button>
+         (click)='status ? leaveEvent(false, model.id, model): login()'>leave</button>
         <button type="button" class="btn btn-primary"
           (click)='status ? joinEvent(true, model.id): login() '>Maybe Going</button>
          <button type="button" class="btn btn-primary"

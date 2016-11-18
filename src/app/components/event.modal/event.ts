@@ -16,14 +16,15 @@ export class EventComponent {
   @Input() model: marker.MapMarker;
   @Input() userInfo: user.UserProfile;
   @Input() status: boolean;
-  //@Output() LogInNow = new EventEmitter();
+  @Input() setMarkersFirst;
+  @Input() login;
 
 
 
   makeMember(maybe?: boolean) {
 
     let member: marker.RsvpSample = {
-      mtime: Date.now(),
+      //mtime: Date.now(),
       member_photo: {
         thumb_link: this.userInfo.picture,
         //photo_link: this.userInfo.bigPicture,
@@ -44,6 +45,12 @@ export class EventComponent {
   joinEvent(maybe: boolean, eventId: string) {
 
     let update = maybe ? this.makeMember(maybe) : this.makeMember();
+    if (maybe) {
+      this.model.maybe_rsvp_count++;
+    }
+
+
+
 
     this.mapService.joinEvent(update, eventId)
       .subscribe({
@@ -51,21 +58,30 @@ export class EventComponent {
           console.log(value);
         },
         error: (err: any) => console.log(err),
-        complete: () => { console.log("event joined") }
+        complete: () => {
+          this.setMarkersFirst();
+          console.log("event joined")
+        }
       })
   }
 
-  leaveEvent(maybe: boolean, eventId: string) {
+  leaveEvent(maybe: boolean, eventId: string, userEvent: marker.MapMarker) {
 
-    let update = maybe ? this.makeMember(maybe) : this.makeMember();
 
-    this.mapService.leaveEvent(update, eventId)
+    let filteredEvent = userEvent.rsvp_sample.filter((value) => value.member.facebookId !== this.userInfo.facebook);
+    //let update = maybe ? this.makeMember(maybe) : this.makeMember();
+    this.model.rsvp_sample = filteredEvent;
+    this.model.yes_rsvp_count--;
+    this.mapService.leaveEvent(filteredEvent, eventId)
       .subscribe({
         next: (value) => {
           console.log(value);
         },
         error: (err: any) => console.log(err),
-        complete: () => { console.log("event left") }
+        complete: () => {
+          this.setMarkersFirst();
+          console.log("event left")
+        }
       })
   }
 
@@ -77,7 +93,11 @@ export class EventComponent {
           console.log(value);
         },
         error: (err: any) => console.log(err),
-        complete: () => { console.log("event left") }
+        complete: () => {
+          this.setMarkersFirst();
+
+          console.log("event destroyed")
+        }
       })
   }
 

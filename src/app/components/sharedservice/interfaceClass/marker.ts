@@ -61,7 +61,7 @@ export namespace marker {
   export interface RsvpSample {
     member_photo: MemberPhoto;
     created?: number;
-    mtime: number;
+    mtime?: number;
     rsvp_id?: number;
     member?: Member;
   }

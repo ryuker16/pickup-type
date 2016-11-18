@@ -23,19 +23,28 @@ export class MapService {
 
   constructor(private http: Http) { }
 
+  //used to grab user data
+  getEvent(eventId: string): Observable<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    console.log(eventId + ' retrieval started');
+    return this.http.get('http://localhost:4000/api/events/' + eventId, options)
+      .map((res: Response) => res.json());
+  }
+
   deleteEvent(eventId: string): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log('event' + eventId + 'deleted event');
-    return this.http.delete('http://52.11.14.57:4000/api/events/' + eventId, options)
+    return this.http.delete('http://localhost:4000/api/events/' + eventId, options)
       .map((res: Response) => res.json());
   }
 
-  leaveEvent(event: marker.RsvpSample, eventId: string): Observable<any> {
+  leaveEvent(event: any, eventId: string): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log('event' + eventId + 'updated');
-    return this.http.put('http://52.11.14.57:4000/api/leave/' + eventId, JSON.stringify(event), options)
+    return this.http.put('http://localhost:4000/api/leave/' + eventId, JSON.stringify(event), options)
       .map((res: Response) => res.json());
   }
 
@@ -43,7 +52,7 @@ export class MapService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log('event' + eventId + 'updated');
-    return this.http.put('http://52.11.14.57:4000/api/events/' + eventId, JSON.stringify(member), options)
+    return this.http.put('http://localhost:4000/api/events/' + eventId, JSON.stringify(member), options)
       .map((res: Response) => res.json());
   }
 
@@ -51,7 +60,7 @@ export class MapService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log(event.name + ' creation started');
-    return this.http.post('http://52.11.14.57:4000/api/events', JSON.stringify(event), options)
+    return this.http.post('http://localhost:4000/api/events', JSON.stringify(event), options)
       .map((res: Response) => res.json());
   }
 

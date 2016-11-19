@@ -18,6 +18,9 @@ export class EventComponent {
   @Input() status: boolean;
   @Input() setMarkersFirst;
   @Input() login;
+  @Output() resetMarkers: EventEmitter<any> = new EventEmitter();
+
+  deleted: Boolean = false;
 
 
 
@@ -45,10 +48,10 @@ export class EventComponent {
   joinEvent(maybe: boolean, eventId: string) {
 
     let update = maybe ? this.makeMember(maybe) : this.makeMember();
+
     if (maybe) {
       this.model.maybe_rsvp_count++;
     }
-
 
 
 
@@ -59,30 +62,47 @@ export class EventComponent {
         },
         error: (err: any) => console.log(err),
         complete: () => {
-          this.setMarkersFirst();
+
+          this.model.yes_rsvp_count++;
+          this.model.rsvp_sample.push(update);
+          this.resetMarkers.emit();
           console.log("event joined")
         }
       })
   }
 
-  leaveEvent(maybe: boolean, eventId: string, userEvent: marker.MapMarker) {
+  leaveEvent(maybe: boolean, eventId: string, userEvent: marker.MapMarker): void {
 
+    let attending: Array<marker.RsvpSample> = [];
+    let filteredEvent: Array<marker.RsvpSample> = [];
 
-    let filteredEvent = userEvent.rsvp_sample.filter((value) => value.member.facebookId !== this.userInfo.facebook);
+    userEvent.rsvp_sample.map((value) => {
+      if (value.member.facebookId !== this.userInfo.facebook) {
+        filteredEvent.push(value);
+      } else {
+        attending.push(value);
+      }
+    });
     //let update = maybe ? this.makeMember(maybe) : this.makeMember();
-    this.model.rsvp_sample = filteredEvent;
-    this.model.yes_rsvp_count--;
-    this.mapService.leaveEvent(filteredEvent, eventId)
-      .subscribe({
-        next: (value) => {
-          console.log(value);
-        },
-        error: (err: any) => console.log(err),
-        complete: () => {
-          this.setMarkersFirst();
-          console.log("event left")
-        }
-      })
+    if (attending.length === 0) {
+      console.log('you had enough of pressing that button!');
+    } else {
+      this.mapService.leaveEvent(filteredEvent, eventId)
+        .subscribe({
+          next: (value) => {
+            console.log(value);
+          },
+          error: (err: any) => console.log(err),
+          complete: () => {
+
+            this.model.yes_rsvp_count--;
+            this.model.rsvp_sample = filteredEvent;
+            //this.setMarkersFirst();
+            this.resetMarkers.emit();
+            console.log("user left event ")
+          }
+        })
+    }
   }
 
   deleteEvent(eventId: string) {
@@ -94,8 +114,9 @@ export class EventComponent {
         },
         error: (err: any) => console.log(err),
         complete: () => {
-          this.setMarkersFirst();
-
+          this.deleted = true;
+          //this.setMarkersFirst();
+          this.resetMarkers.emit();
           console.log("event destroyed")
         }
       })

@@ -82,6 +82,9 @@ export class MenuComponent implements OnInit {
             modalEvent.componentInstance.status = this.authStatus;
             modalEvent.componentInstance.login = this.login;
             modalEvent.componentInstance.setMarkersFirst = this.setMarkersFirst;
+            modalEvent.componentInstance.resetMarkers.subscribe(() => {
+              this.setMarkersFirst();
+            });
             console.log(value[0]);
           },
           error: (err: any) => console.log(err),

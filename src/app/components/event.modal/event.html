@@ -2,10 +2,10 @@
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
-  <h4 class="modal-title">{{model.name}}</h4>
+  <h4  *ngIf="!deleted" class="modal-title">{{model.name}}</h4>
+  <h3 *ngIf="deleted" class="modal-title"> {{model.name}} was deleted!</h3>
 </div>
-
-<div class="modal-body">
+<div *ngIf="!deleted" class="modal-body">
   <div class="row">
     <div class="col-md-6">
       <p>Address: <a  target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon">{{model.venue.address_1}}</a>
@@ -23,10 +23,11 @@
     </p>
     </div>
   </div>
-  <div></div>
+  <h6>Going</h6>
   <span *ngIf="model.rsvp_sample" class="image-info-window">
         <img *ngFor='let b of model.rsvp_sample;'  class="image-window" [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
       </span>
+
   <div></div>
   <div></div>
   <div class="row">
@@ -41,8 +42,6 @@
          (click)='status ? joinEvent(false, model.id): login()'>Join</button>
         <button type="button" class="btn btn-primary"
          (click)='status ? leaveEvent(false, model.id, model): login()'>leave</button>
-        <button type="button" class="btn btn-primary"
-          (click)='status ? joinEvent(true, model.id): login() '>Maybe Going</button>
          <button type="button" class="btn btn-primary"
          *ngIf="status ? model.group.facebookId == userInfo.facebook : false"
           (click)='deleteEvent(model.id)'

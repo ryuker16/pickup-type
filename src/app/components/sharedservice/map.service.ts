@@ -14,11 +14,16 @@ grabs event data from server and holds master list of sports.
 export class MapService {
 
   // list of sports to export
-  listSports: string[] = ["baseball", "football", "paddle", "soccer", "boxing", "golf", "hockey",
-    "tennis", "volleyball", "skateboard", "kickball", "bowling", "billiard", "offroad",
-    "running", "hiking", "skating", "dance", "hockey", "yoga", "wrestling", "squash", "swimming", "horseriding", "fishing",
-    "handball", "sailing", "skiing", "shooting", "bike", "hunting", 'archery', 'karting', 'atv', "karting", "kayaking", 'climbing',
-    'cricket', 'motorcycle', 'rugby', 'judo', 'scuba', 'barre', 'atv', 'basketball', 'rowing', 'karate', 'mma', 'equestrian', 'gymnastics'
+  listSports: string[] = ["baseball", "football", "paddle", "soccer", "boxing",
+    "golf", "hockey", "fencing", "rugby", "bowling", "powerlifting", "darts", "fitness",
+    "tennis", "volleyball", "skateboard", "kickball", "bowling", "billiard",
+    "offroad", "diving", "ballet", "chess", "curling", "pingpong", "skiing", "iceskating", "skydiving",
+    "running", "hiking", "skating", "dance", "hockey", "yoga", "wrestling",
+    "squash", "swimming", "horseriding", "fishing", "billards",
+    "softball", "sailing", "skiing", "shooting", "bike", "hunting", 'archery',
+    'karting', 'atv', "karting", "kayak", 'climbing', 'snowboarding',
+    'cricket', 'motorcycle', 'rugby', 'judo', 'scuba', 'barre', 'atv', 'basketball',
+    'rowing', 'karate', 'mma', 'equestrian', 'gymnastics'
   ];
 
   constructor(private http: Http) { }
@@ -67,11 +72,16 @@ export class MapService {
   //return event map data from server
   getMapData(chosen?: string[]): Observable<marker.MapMarker[]> {
 
-    let sports: string[] = ["baseball", "football", "paddle", "soccer", "boxing", "golf", "hockey",
-      "tennis", "volleyball", "skateboard", "kickball", "bowling", "billiard", "offroad",
-      "running", "hiking", "skiing", "skating", "dance", "hockey", "yoga", "wrestling", "squash", "swimming", "horseriding", "fishing",
-      "handball", "sailing", "shooting", "bike", "hunting", 'archery', 'karting', 'atv', "karting", "kayaking", 'climbing',
-      'cricket', 'motorcycle', 'scuba', 'judo', 'barre', 'atv', 'basketball', 'rowing', 'karate', 'mma', 'equestrian', 'gymnastics'
+    let sports: string[] = ["baseball", "football", "paddle", "soccer", "boxing",
+      "golf", "hockey", "fencing", "rugby", "bowling", "powerlifting", "darts", "fitness",
+      "tennis", "volleyball", "skateboard", "kickball", "bowling", "billiard",
+      "offroad", "diving", "ballet", "chess", "curling", "pingpong", "skiing", "iceskating", "skydiving",
+      "running", "hiking", "skating", "dance", "hockey", "yoga", "wrestling",
+      "squash", "swimming", "horseriding", "fishing", "billards",
+      "softball", "sailing", "skiing", "shooting", "bike", "hunting", 'archery',
+      'karting', 'atv', "karting", "kayak", 'climbing', 'snowboarding',
+      'cricket', 'motorcycle', 'rugby', 'judo', 'scuba', 'barre', 'atv', 'basketball',
+      'rowing', 'karate', 'mma', 'equestrian', 'gymnastics'
     ];
 
     let sportChoices: string[] = chosen !== undefined ? chosen : sports;

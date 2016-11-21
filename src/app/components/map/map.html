@@ -3,8 +3,8 @@
 
 
   <sebm-google-map-marker *ngFor="let m of markers; let i = index"
-   [latitude]="m.venue.lat" [iconUrl]="m.sport ? 'app/images/' + m.sport + '.png' : 'app/images/sport.png'"
-   [longitude]="m.venue.lon" (markerClick)="openModalNow(m)" [visible]="m.options.visible" [id]="i"
+   [latitude]="m.venue.lat"  [iconUrl]="iconMaker(m.group.who, m.sport)"
+   [longitude]="m.venue.lon" (markerClick)="openModalNow(m)"  [visible]="m.options.visible" [id]="i"
   >
   <sebm-google-map-info-window>
    <h5>{{m.name}} - {{m.time | date: 'short'}}</h5>

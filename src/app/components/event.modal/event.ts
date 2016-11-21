@@ -17,11 +17,15 @@ export class EventComponent {
   @Input() userInfo: user.UserProfile;
   @Input() status: boolean;
   @Input() setMarkersFirst;
-  @Input() login;
+  @Output() login: EventEmitter<any> = new EventEmitter();
   @Output() resetMarkers: EventEmitter<any> = new EventEmitter();
 
   deleted: Boolean = false;
 
+  logMeIn() {
+    this.login.emit();
+    this.status = true;
+  }
 
 
   makeMember(maybe?: boolean) {

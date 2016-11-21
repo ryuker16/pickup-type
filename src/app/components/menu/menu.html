@@ -18,7 +18,7 @@
     <li class="nav-item float-xs-right " ngbDropdown  *ngSwitchCase='true'>
       <p class="nav-link" ngbDropdownToggle >Your Events<span class="sr-only"></span></p>
       <ul class="dropdown-menu">
-        <h5 class="dropdown-header">Created</h5>
+        <h5 class="dropdown-header">Created Events</h5>
         <li class="dropdown-item" *ngFor="let event of userMarkers" (click)="openEvent(event)">
           <h5>{{event.name}}</h5>
           <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br>

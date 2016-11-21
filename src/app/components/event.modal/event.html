@@ -39,9 +39,9 @@
     <div class="col-md-12" *ngIf="model.group.who == 'facebook';">
       <div class="btn-group" data-toggle="buttons">
         <button type="button" class="btn btn-primary"
-         (click)='status ? joinEvent(false, model.id): login()'>Join</button>
+         (click)='status ? joinEvent(false, model.id): logMeIn()'>Join</button>
         <button type="button" class="btn btn-primary"
-         (click)='status ? leaveEvent(false, model.id, model): login()'>leave</button>
+         (click)='status ? leaveEvent(false, model.id, model): logMeIn()'>leave</button>
          <button type="button" class="btn btn-primary"
          *ngIf="status ? model.group.facebookId == userInfo.facebook : false"
           (click)='deleteEvent(model.id)'

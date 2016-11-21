@@ -28,17 +28,17 @@ module here: https://ng2map.github.io/#/google-map
 
 //there was an issue getting the maps directive to accept additional mouse events
 //so I'm adding them to protoype here: ng2-angular-maps is very alpha
-const baseAddEventListeners = SebmGoogleMapMarker.prototype._addEventListeners;
-SebmGoogleMapMarker.prototype._addEventListeners = function() {
-  this._markerManager.createEventObservable('mouseover', this)
-    .subscribe(() => {
-      this._infoWindow.open();
-    })
-  this._markerManager.createEventObservable('mouseout', this)
-    .subscribe(() => { this._infoWindow.close(); })
-  baseAddEventListeners.call(this);
-}
-
+// const baseAddEventListeners = SebmGoogleMapMarker.prototype._addEventListeners;
+//
+// SebmGoogleMapMarker.prototype._addEventListeners = function() {
+//   this._markerManager.createEventObservable('mouseover', this)
+//     .subscribe(() => {
+//       this._infoWindow.open();
+//     })
+//   this._markerManager.createEventObservable('mouseout', this)
+//     .subscribe(() => { this._infoWindow.close(); })
+//   baseAddEventListeners.call(this);
+// }
 
 
 @Component({
@@ -82,9 +82,28 @@ export class MapComponent {
   // helps with communication with Bootstrap modal internal components
   openModalNow(data: marker.MapMarker) {
     this.openModal.emit(data);
-    console.log(data + 'event emitted at map modal');
+    console.log(data);
   }
 
+  iconMaker(group: string, sport?: string) {
+    if (group == 'facebook') {
+      return sport ? 'app/images/bluesporticons/sporticons-original_' + sport + '.png' : 'app/images/bluesporticons/sporticons-original_sport.png'
+    } else {
+      return sport ? 'app/images/redsporticons/sporticons-original_' + sport + '.png' : 'app/images/redsporticons/sporticons-original_sport.png'
+    }
+  }
+
+
+
+  //
+  // iconMaker: any = {
+  //   path: "app/images/bluesporticons/sporticons-original.",
+  //   fillColor: 'yellow',
+  //   fillOpacity: 0.8,
+  //   scale: 1,
+  //   strokeColor: 'gold',
+  //   strokeWeight: 14
+  // };
 
   //@Output() openMarker = new EventEmitter();
   // open(data: marker.MapMarker) {

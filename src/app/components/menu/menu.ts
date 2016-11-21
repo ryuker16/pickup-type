@@ -72,20 +72,24 @@ export class MenuComponent implements OnInit {
   //open user interacted/created events from drop down
   openEvent(data: marker.MapMarker) {
     var modalEvent;
+    console.log(data);
     if (data.group.who == 'facebook') {
       this.mapService.getEvent(data.id)
         .subscribe({
           next: (value) => {
+            console.log(value[0]);
             modalEvent = this.modalService.open(EventComponent);
             modalEvent.componentInstance.model = value[0];
             modalEvent.componentInstance.userInfo = this.userData;
             modalEvent.componentInstance.status = this.authStatus;
-            modalEvent.componentInstance.login = this.login;
             modalEvent.componentInstance.setMarkersFirst = this.setMarkersFirst;
             modalEvent.componentInstance.resetMarkers.subscribe(() => {
               this.setMarkersFirst();
             });
-            console.log(value[0]);
+            modalEvent.componentInstance.login.subscribe(() => {
+              this.login();
+            });
+            console.log(value);
           },
           error: (err: any) => console.log(err),
           complete: () => {
@@ -173,10 +177,9 @@ export class MenuComponent implements OnInit {
           newUserMarkers.push(this.markers[i]);
         } else {
           let attending: any = this.markers[i].rsvp_sample.find(findGoing);
-          if (attending !== undefined && attending.maybe_going == false) {
+          console.log(attending);
+          if (attending !== undefined) {
             newAttendingMarkers.push(this.markers[i]);
-          } else if (attending !== undefined && attending.maybe_going == true) {
-            newMaybeMarkers.push(this.markers[i]);
           }
         }
       }
@@ -185,7 +188,7 @@ export class MenuComponent implements OnInit {
     this.userAttending = newAttendingMarkers;
     this.userMaybe = newMaybeMarkers;
 
-    console.log('User Events: ' + this.userMarkers);
+    console.log('User Events: ' + this.userAttending);
   };
 
   // Get Markers for all sports once and set original marker events for reference

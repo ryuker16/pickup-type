@@ -1,14 +1,17 @@
 <nav class="navbar navbar-dark bg-inverse fixed-top">
-  <a class="navbar-brand" href="#">PickUp Sports</a>
+  <a class="navbar-brand" href="/"> <img src="../../images/pickuplogosmall.png" width="40" height="40" class="d-inline-block align-top" alt="">
+  PickUp Sports</a>
 <ul class="nav navbar-nav" [ngSwitch]="authStatus">
-  <li class="nav-item active" ngbDropdown >
-    <p class="nav-link" ngbDropdownToggle >Choose a Sport <span class="sr-only"></span></p>
-    <ul class="dropdown-menu ">
+  <li class="nav-item active" [autoClose]="false" ngbDropdown #dropSport="ngbDropdown">
+    <p class="nav-link" ngbDropdownToggle>Choose a Sport <span class="sr-only"></span></p>
+    <ul class="dropdown-menu" (mouseleave)="dropSport.close()">
       <h6  class="dropdown-header" (click)='sortSports(sport)'> Show All </h6>
-      <li class="dropdown-item" *ngFor="let sport of sports;" (click)="sortSports(sport)"><p>{{sport}}</p></li>
+      <li class="dropdown-item" *ngFor="let sport of sports  | paginate: { id:'pageControlSport', itemsPerPage: 10, currentPage: p }" (click)="sortSports(sport)"><p>{{sport}}</p></li>
+        <pagination-controls id="pageControlSport" (pageChange)="p = $event;"></pagination-controls>
     </ul>
+
   </li>
-  <form ngbDropdown #search="ngbDropdown"  class="form-inline  pull-lg-right">
+  <form ngbDropdown #search="ngbDropdown" [autoClose]="false"  class="form-inline  pull-lg-right">
     <li class="nav-item  float-lg-right" *ngSwitchCase='true' >
        <img [src]="userData ? userData.picture : '' " />
      </li>
@@ -41,9 +44,14 @@
         </li>
       </ul>
     </li>
-    <input #searchBar class="form-control nav-item" autocomplete="on" pattern="^[a-zA-Z0-9]+$"  type="search" (keyup)="searchSports($event); search.open();$event.stopPropagation();" placeholder="Search Events">
-  <ul class="dropdown-menu ">
-    <li class="dropdown-item" *ngFor="let events of returnedEvents;" (click)="openEvent(events)">{{events.name}} <br> {{events.time | date:"short"}} </li>
+    <input #searchBar class="form-control nav-item" autocomplete="on"
+    pattern="^[a-zA-Z0-9]+$"  type="search" (keyup)="searchSports($event);
+    search.open();$event.stopPropagation();" placeholder="Search Events"  >
+  <ul class="dropdown-menu"  (mouseleave)="search.close()">
+    <li class="dropdown-item" *ngFor="let events of returnedEvents | paginate:
+     { id:'pageControlEvent', itemsPerPage: 10, currentPage: c }" (click)="openEvent(events)">
+     {{events.name}} <br> {{events.time | date:"short"}} </li>
+     <pagination-controls id='pageControlEvent' autoHide="true" (pageChange)="c = $event;"></pagination-controls>
   </ul>
   <button type="button" class="btn btn-primary nav-item" (click)="authStatus ? open() : login()">
     Make New Game

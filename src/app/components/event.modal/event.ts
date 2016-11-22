@@ -8,7 +8,16 @@ import {MapService} from '../sharedservice/map.service';
 
 @Component({
   selector: 'modal-event',
-  template: require('./event.html')
+  template: require('./event.html'),
+  styles: [`
+     img {
+     max-width: 550px !important;
+    }
+    .modal-dialog {
+    max-width: 700px !important;
+    }
+    `
+  ]
 })
 export class EventComponent {
   constructor(public activeModal: NgbActiveModal, private mapService: MapService) {

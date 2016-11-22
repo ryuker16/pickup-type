@@ -29,6 +29,7 @@ import {HttpModule, JsonpModule } from '@angular/http';
 import {MapService} from './components/sharedservice/map.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MenuComponent} from './components/menu/menu';
+import {Ng2PaginationModule} from 'ng2-pagination';
 import {Ng2ArrayPipesModule, Ng2StringPipesModule } from 'angular-pipes';
 import {SearchArray} from './components/pipes/searchField';
 import {AuthUser} from './components/sharedservice/auth.user';
@@ -45,6 +46,7 @@ import {Ng2UiAuthModule, AuthService} from 'ng2-ui-auth';
     Ng2ArrayPipesModule,
     Ng2StringPipesModule,
     ReactiveFormsModule,
+    Ng2PaginationModule,
     FormsModule,
     HttpModule,
     AgmCoreModule.forRoot({

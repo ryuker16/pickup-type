@@ -4,3 +4,7 @@ body {
 .pac-container {
     z-index: 1051 !important;
 }
+
+.modal-dialog {
+max-width: 700px !important;
+}

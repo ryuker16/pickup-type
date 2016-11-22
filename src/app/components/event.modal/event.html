@@ -31,11 +31,11 @@
   <div></div>
   <div></div>
   <div class="row">
+    <div class="btn-group" data-toggle="buttons">
+    <a role="button" *ngIf="model.group.who !== 'facebook';" class="btn btn-danger " target="_blank" [href]="model.event_url" > MeetUp.com Event - RSVP at MeetUp.com </a>
 
-    <a target="_blank" [href]="model.event_url" ><button type="button" *ngIf="model.group.who !== 'facebook';" class="btn btn-danger btn-lg btn-block">  MeetUp.com Event - RSVP at MeetUp.com</button> </a>
-
-    <a target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon"><button type="button" *ngIf="model.group.who !== 'facebook';"  class="btn btn-primary btn-lg btn-block">Google Map Directions</button></a>
-
+    <a target="_blank" role="button"  [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon" *ngIf="model.group.who !== 'facebook';"  class="btn btn-primary ">Google Map Directions</a>
+</div>
     <div class="col-md-12" *ngIf="model.group.who == 'facebook';">
       <div class="btn-group" data-toggle="buttons">
         <button type="button" class="btn btn-primary"

@@ -11,6 +11,7 @@ import {EventComponent} from '../event.modal/event';
 import {AuthService} from 'ng2-ui-auth';
 import {Observable} from 'rxjs/Observable';
 import {Subscriber} from 'rxjs/Subscriber';
+
 const fakeEvent = require('./fakeevent.json');
 
 

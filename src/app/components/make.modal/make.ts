@@ -1,10 +1,10 @@
-import {Component, Input, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {user} from '../sharedservice/interfaceClass/user';
-import {marker} from '../sharedservice/interfaceClass/marker';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
 import {NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {MapService} from '../sharedservice/map.service';
 import { MapsAPILoader } from 'angular2-google-maps/core';
-import { FormGroup, Validators, FormBuilder } from "@angular/forms";
+import {marker} from '../sharedservice/interfaceClass/marker';
+import {user} from '../sharedservice/interfaceClass/user';
+import {MapService} from '../sharedservice/map.service';
 
 
 
@@ -43,7 +43,7 @@ export class MakeComponent implements OnInit {
       locationHelp: [''],
       searchPlace: [''],
       startTime: ['']
-    })
+    });
 
   }
 
@@ -61,8 +61,8 @@ export class MakeComponent implements OnInit {
         this.place = autocomplete.getPlace();
         console.log(this.place);
 
-      })
-    })
+      });
+    });
 
   }
   // used to create event & mapMarker combing form data with venue
@@ -86,7 +86,8 @@ export class MakeComponent implements OnInit {
       phone: fv.phone,
       yes_rsvp_count: 1,
       name: fv.title,
-      time: Date.now(),
+      created: Date.now(),
+      time: fv.startTime,
       sport: fv.chooseSport,
       group: {
         id: +this.userInfo.facebook,
@@ -102,7 +103,6 @@ export class MakeComponent implements OnInit {
       },
       status: 'user',
       rsvp_sample: [{
-        mtime: Date.now(),
         member_photo: {
           thumb_link: this.userInfo.picture,
           //photo_link: this.userInfo.bigPicture,
@@ -116,7 +116,7 @@ export class MakeComponent implements OnInit {
         }
       }],
       options: { visible: true }
-    }
+    };
   }
 
   submitForm(formValues: any) {
@@ -128,8 +128,8 @@ export class MakeComponent implements OnInit {
           console.log(value);
         },
         error: (err: any) => console.log(err),
-        complete: () => { console.log("event sent") }
-      })
+        complete: () => { console.log("event sent"); }
+      });
 
     console.log(newEvent);
   }

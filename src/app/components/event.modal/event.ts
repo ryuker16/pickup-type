@@ -1,6 +1,6 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {marker} from '../sharedservice/interfaceClass/marker';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {marker} from '../sharedservice/interfaceClass/marker';
 import {user} from '../sharedservice/interfaceClass/user';
 import {MapService} from '../sharedservice/map.service';
 
@@ -10,11 +10,28 @@ import {MapService} from '../sharedservice/map.service';
   selector: 'modal-event',
   template: require('./event.html'),
   styles: [`
-     img {
-     max-width: 550px !important;
-    }
     .modal-dialog {
     max-width: 700px !important;
+  }
+  .infoText  {
+    display: inline;
+  }
+
+    div.btn-group {
+    margin: 0 auto;
+    text-align: center;
+    width: inherit;
+    display: inline-block;
+  }
+
+  div.btn-group-wrap {
+    margin-top: 2%;
+    text-align: center;
+  }
+
+    :host >>>   div.innerContent img {
+      width: 100%;
+      height: auto;
     }
     `
   ]
@@ -53,8 +70,8 @@ export class EventComponent {
         facebookId: this.userInfo.facebook,
         maybe_going: maybe == true ? maybe : false
       }
-    }
-    return member
+    };
+    return member;
   };
 
 
@@ -66,28 +83,27 @@ export class EventComponent {
       this.model.maybe_rsvp_count++;
     }
 
-
-
     this.mapService.joinEvent(update, eventId)
       .subscribe({
         next: (value) => {
           console.log(value);
         },
-        error: (err: any) => console.log(err),
+        error: (err: any) => {
+          console.log(err)
+        },
         complete: () => {
-
           this.model.yes_rsvp_count++;
           this.model.rsvp_sample.push(update);
           this.resetMarkers.emit();
-          console.log("event joined")
+          console.log("event joined");
         }
-      })
+      });
   }
 
   leaveEvent(maybe: boolean, eventId: string, userEvent: marker.MapMarker): void {
 
-    let attending: Array<marker.RsvpSample> = [];
-    let filteredEvent: Array<marker.RsvpSample> = [];
+    let attending: marker.RsvpSample[] = [];
+    let filteredEvent: marker.RsvpSample[] = [];
 
     userEvent.rsvp_sample.map((value) => {
       if (value.member.facebookId !== this.userInfo.facebook) {
@@ -112,9 +128,9 @@ export class EventComponent {
             this.model.rsvp_sample = filteredEvent;
             //this.setMarkersFirst();
             this.resetMarkers.emit();
-            console.log("user left event ")
+            console.log("user left event");
           }
-        })
+        });
     }
   }
 
@@ -130,9 +146,9 @@ export class EventComponent {
           this.deleted = true;
           //this.setMarkersFirst();
           this.resetMarkers.emit();
-          console.log("event destroyed")
+          console.log("event destroyed");
         }
-      })
+      });
   }
 
 

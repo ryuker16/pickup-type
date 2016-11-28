@@ -1,45 +1,34 @@
 import {
-  Component, OnInit, Output, Input, EventEmitter
+  Component, EventEmitter, Input, Output
 } from '@angular/core';
-import {user} from '../sharedservice/interfaceClass/user';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {marker} from '../sharedservice/interfaceClass/marker';
-import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {EventComponent} from '../event.modal/event';
-
-import {
-  SebmGoogleMapMarker,
-} from 'angular2-google-maps/core';
+import {user} from '../sharedservice/interfaceClass/user';
 
 /**
 map component
 
-pretty bare now until I add the custom marker overlay. Recieves markers for map
-via Input from it's parent(menu). The map service it uses relies on the module
-ng2-ui-maps that's still pretty limited compared to the angular 1 version. Hence
-all the extra work I have to do. For example, there are no options to modify
-an info window shows up or css....only click. So customer overlay it is.
+ Recieves markers for map via Input from it's parent(menu). The map service it uses relies on the module ng2-ui-maps that's still pretty limited compared to the angular 1 version. Hence all the extra work I have to do. For example,there are no options to modify an info window shows up or css
 
-Default map configuration settings should go here(like latitude) more about map
+Default map configuration settings should go here(like latitude), more about map
 module here: https://ng2map.github.io/#/google-map
-
-
 */
 
+/**
+*there was an issue getting the maps directive to accept additional mouse events
+*so I'm adding them to protoype here: ng2-angular-maps is very alpha
+const baseAddEventListeners = SebmGoogleMapMarker.prototype._addEventListeners;
 
-//there was an issue getting the maps directive to accept additional mouse events
-//so I'm adding them to protoype here: ng2-angular-maps is very alpha
-// const baseAddEventListeners = SebmGoogleMapMarker.prototype._addEventListeners;
-//
-// SebmGoogleMapMarker.prototype._addEventListeners = function() {
-//   this._markerManager.createEventObservable('mouseover', this)
-//     .subscribe(() => {
-//       this._infoWindow.open();
-//     })
-//   this._markerManager.createEventObservable('mouseout', this)
-//     .subscribe(() => { this._infoWindow.close(); })
-//   baseAddEventListeners.call(this);
-// }
-
+SebmGoogleMapMarker.prototype._addEventListeners = function() {
+  this._markerManager.createEventObservable('mouseover', this)
+    .subscribe(() => {
+      this._infoWindow.open();
+    })
+  this._markerManager.createEventObservable('mouseout', this)
+    .subscribe(() => { this._infoWindow.close(); })
+  baseAddEventListeners.call(this);
+}
+*/
 
 @Component({
   selector: 'fountain-map',
@@ -76,75 +65,42 @@ export class MapComponent {
   @Input() status: boolean;
   @Output() openModal: EventEmitter<any> = new EventEmitter();
 
-
-
-  //trigger on parent component menu to launch modal using Output
-  // helps with communication with Bootstrap modal internal components
-  openModalNow(data: marker.MapMarker) {
-    this.openModal.emit(data);
-    console.log(data);
-  }
-
-  iconMaker(group: string, sport?: string) {
-    if (group == 'facebook') {
-      return sport ? 'app/images/bluesporticons/sporticons-original_' + sport + '.png' : 'app/images/bluesporticons/sporticons-original_sport.png'
-    } else {
-      return sport ? 'app/images/redsporticons/sporticons-original_' + sport + '.png' : 'app/images/redsporticons/sporticons-original_sport.png'
-    }
-  }
-
-
-
-  //
-  // iconMaker: any = {
-  //   path: "app/images/bluesporticons/sporticons-original.",
-  //   fillColor: 'yellow',
-  //   fillOpacity: 0.8,
-  //   scale: 1,
-  //   strokeColor: 'gold',
-  //   strokeWeight: 14
-  // };
-
-  //@Output() openMarker = new EventEmitter();
-  // open(data: marker.MapMarker) {
-  //   let modalEvent = this.modalService.open(EventComponent);
-  //   modalEvent.componentInstance.model = data;
-  //   modalEvent.componentInstance.userInfo = this.userInfo;
-  // }
-
   constructor(
     private modalService: NgbModal) {
   }
 
-  // default map settings - there are many more options availible
-  // set to nashville now, will default to user location anywhere in future
-  //https://ng2map.github.io/#/google-map
-
+  /**
+  *default map settings - there are many more options availible
+  *set to nashville now, will default to user location anywhere in future
+  *https://ng2map.github.io/#/google-map
+  */
   lat: number = 36.160338;
   lng: number = -86.778780;
   zoom: number = 12;
   zoomIn: boolean = true;
 
-  clickMarker(visible: string, index: number) {
-    console.log(`clicked the marker: ${visible || index}`)
+  /**
+   * [openModalNow: trigger on parent component menu to launch modal using *Output ]
+   * @param  {marker.MapMarker} data [an event]
+   * @return {[void]}                [merely triggers Event on parent]
+   */
+  openModalNow(data: marker.MapMarker): void {
+    this.openModal.emit(data);
+    console.log(data);
+  }
+  /**
+   * [ icon maker: picks image icon based on group, can expand to add more * *sources, used as icon for map markers ]
+   * @param  {string} group [source group(user events, meetup)]
+   * @param  {string} sport [sport to match icon name]
+   * @return {[string]}
+   */
+  iconMaker(group: string, sport?: string): string {
+    if (group == 'facebook') {
+      return sport ? 'app/images/bluesporticons/sporticons-original_' + sport + '.png' : 'app/images/bluesporticons/sporticons-original_sport.png';
+    } else {
+      return sport ? 'app/images/redsporticons/sporticons-original_' + sport + '.png' : 'app/images/redsporticons/sporticons-original_sport.png';
+    }
   }
 
-
-
-  //test click - delete later
-  // mapClicked($event: any) {
-  //   this.markers.push({
-  //     latitude: $event.coords.lat,
-  //     longitude: $event.coords.lng,
-  //     title: 'A',
-  //     date: 10,
-  //     going: 10,
-  //     maybeGoing: 19,
-  //     sport: 'make new events',
-  //     options: {
-  //       visibile: true
-  //     }
-  //   });
-  // }
 
 }

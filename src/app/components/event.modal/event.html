@@ -8,56 +8,61 @@
 <div *ngIf="!deleted" class="modal-body">
   <div class="row">
     <div class="col-md-6">
-      <p>Address: <a  target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon">{{model.venue.address_1}}</a>
-      <br>City: {{model.venue.city}}
-      <br>Venue: {{model.venue.name}}<br></p>
-      <h6>Host: {{model.group.name}}</h6>
-
-      <img class="img-fluid" [src]="model.group.group_photo ? model.group.group_photo.thumb_link :  ''">
-
+    <div>  <h6 class="infoText">Address:</h6> <a class="infoText" target="_blank"
+      [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon" > {{model.venue.address_1}}</a>
     </div>
-    <div class="col-md-6"><p>Type:{{model.sport}}<br> Time: {{model.time | date: "short"}}
-      <br>Group: {{model.group.name}}
-      <br>Created: {{model.created | date: "short"}}
-      <br>Going: {{model.yes_rsvp_count}}<br>Maybe Going: {{model.maybe_rsvp_count}}<br>
-    </p>
+      <div *ngIf="model.venue.city !== undefined" ><h6 class="infoText">City:</h6><p class="infoText"> {{model.venue.city}}</p></div>
+      <div ><h6 class="infoText">Venue:</h6><p class="infoText"> {{model.venue.name}}</p></div>
+      <div><h6 class="infoText">Host:</h6><p class="infoText"> {{model.group.name}}</p></div>
+      <img class="img-fluid" [src]="model.group.group_photo ? model.group.group_photo.thumb_link :  ''">
+      <div *ngIf="model.group.who === 'facebook'" class="btn-group " data-toggle="buttons">
+      <a target="_blank" role="button" [href]="'mailto:' + model.email"
+         class="btn btn-orange btn-sm">Email Host</a>
+      <a  *ngIf="model.phone !== undefined" role="button" [href]="'tel:' + model.phone"
+         class="btn btn-orange btn-sm ">Call Host</a>
     </div>
   </div>
-  <h6>Going</h6>
+    <div class="col-md-6">
+      <div ><h6 class="infoText">Type: {{model.sport}}</h6></div>
+      <div ><h6 class="infoText">Time:{{model.time | date: "short"}}</h6></div>
+      <div ><h6 class="infoText">Group:</h6><p class="infoText"> {{model.group.name}}</p></div>
+      <div ><h6 class="infoText">Created:</h6><p class="infoText"> {{model.created | date: "short"}}</p></div>
+      <div ><h6 class="infoText">Going:</h6><p class="infoText"> {{model.yes_rsvp_count}}</p></div>
+    </div>
+  </div>
+  <h6>Attendees:</h6>
   <span *ngIf="model.rsvp_sample" class="image-info-window">
         <img *ngFor='let b of model.rsvp_sample;'  class="image-window" [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
       </span>
 
-  <div></div>
-  <div></div>
-  <div class="row">
-    <div class="btn-group" data-toggle="buttons">
-    <a role="button" *ngIf="model.group.who !== 'facebook';" class="btn btn-danger " target="_blank" [href]="model.event_url" > MeetUp.com Event - RSVP at MeetUp.com </a>
 
-    <a target="_blank" role="button"  [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon" *ngIf="model.group.who !== 'facebook';"  class="btn btn-primary ">Google Map Directions</a>
-</div>
-    <div class="col-md-12" *ngIf="model.group.who == 'facebook';">
-      <div class="btn-group" data-toggle="buttons">
-        <button type="button" class="btn btn-primary"
+  <div class="row btn-group-wrap">
+    <div class="btn-group " data-toggle="buttons">
+    <a role="button" *ngIf="model.group.who !== 'facebook';" class="btn btn-orange " target="_blank" [href]="model.event_url" >RSVP at MeetUp.com</a>
+
+    <a target="_blank" role="button" [href]="'https://www.google.com/maps/dir/Current+Location/'
+     + model.venue.lat + ',' + model.venue.lon" *ngIf="model.group.who !== 'facebook';"
+       class="btn btn-orange ">Google Map</a>
+     </div>
+
+      <div class="btn-group" data-toggle="buttons" *ngIf="model.group.who == 'facebook';">
+        <button type="button" class="btn btn-orange"
          (click)='status ? joinEvent(false, model.id): logMeIn()'>Join</button>
-        <button type="button" class="btn btn-primary"
+        <button type="button" class="btn btn-orange"
          (click)='status ? leaveEvent(false, model.id, model): logMeIn()'>leave</button>
-         <button type="button" class="btn btn-primary"
+         <button type="button" class="btn btn-orange"
          *ngIf="status ? model.group.facebookId == userInfo.facebook : false"
           (click)='deleteEvent(model.id)'
          >Delete</button>
-         <a  target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/'
-          + model.venue.lat + ',' + model.venue.lon"><button type="button" class="btn btn-primary" >Google Map Directions</button></a>
-
-      </div>
-
+         <a  target="_blank" role="button"  [href]="'https://www.google.com/maps/dir/Current+Location/'
+          + model.venue.lat + ',' + model.venue.lon" class="btn btn-orange">Google Map</a>
     </div>
 
   </div>
   <br>
-  <div [innerHTML]='model.description'></div>
+  <div class="innerContent" [innerHTML]='model.description'></div>
 
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-orange" (click)="activeModal.close('Close click')">Close</button>
 </div>

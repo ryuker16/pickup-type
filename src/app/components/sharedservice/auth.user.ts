@@ -1,5 +1,5 @@
+import {Injectable} from "@angular/core";
 import {CustomConfig} from 'ng2-ui-auth';
-import {Injectable} from "@Angular/core";
 
 @Injectable()
 export class AuthUser extends CustomConfig {

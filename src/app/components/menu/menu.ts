@@ -1,16 +1,13 @@
 import {
-  Component, OnInit, TemplateRef
+  Component, OnInit
 } from '@angular/core';
-import {MapService} from '../sharedservice/map.service';
-import {AuthLogin} from '../sharedservice/auth.login';
-import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {user} from '../sharedservice/interfaceClass/user';
-import {marker} from '../sharedservice/interfaceClass/marker';
-import {MakeComponent} from '../make.modal/make';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventComponent} from '../event.modal/event';
-import {AuthService} from 'ng2-ui-auth';
-import {Observable} from 'rxjs/Observable';
-import {Subscriber} from 'rxjs/Subscriber';
+import {MakeComponent} from '../make.modal/make';
+import {AuthLogin} from '../sharedservice/authlogin.service';
+import {marker} from '../sharedservice/interfaceClass/marker';
+import {user} from '../sharedservice/interfaceClass/user';
+import {MapService} from '../sharedservice/map.service';
 
 const fakeEvent = require('./fakeevent.json');
 
@@ -30,6 +27,21 @@ Used NG2-ui-bootstrap with the bootstrap 4 css.
 @Component({
   selector: 'fountain-menu',
   template: require('./menu.html'),
+  styles: [`
+
+    .inputMobileNav {
+
+    }
+
+    .hide-bottom-menu {
+      z-index: 2;
+    }
+
+    .inputMobileMenu {
+      margin-left: 5px;
+    }
+  
+    `]
 })
 export class MenuComponent implements OnInit {
   // stored profile data.
@@ -37,22 +49,24 @@ export class MenuComponent implements OnInit {
   // authStatus state determines if user profile is shown; false for no
   authStatus: boolean = false;
   //copy of original set of markers retrieved from database
-  firstMarkers: Array<marker.MapMarker>;
+  firstMarkers: marker.MapMarker[];
   //google maps requires at least one marker identified before starting. Will be
   //replaced
   //markers: Array<marker.MapMarker>;
-  markers: Array<marker.MapMarker> = [fakeEvent];
+  markers: marker.MapMarker[] = [fakeEvent];
+  //collapse menu
+  isCollapsed: boolean = false;
 
   // search markers and push matches here
 
-  returnedEvents: Array<marker.MapMarker> = [];
+  returnedEvents: marker.MapMarker[] = [];
 
   //user made markers to list in profile.
-  userMarkers: Array<marker.MapMarker>;
+  userMarkers: marker.MapMarker[];
   //user attending event markers to list in profile.
-  userAttending: Array<marker.MapMarker>;
+  userAttending: marker.MapMarker[];
   //user maybe attending markers to list in profile.
-  userMaybe: Array<marker.MapMarker>;
+  userMaybe: marker.MapMarker[];
   //list of sports
   sports = this.mapService.listSports.sort();
 
@@ -65,14 +79,18 @@ export class MenuComponent implements OnInit {
     this.setMarkersFirst();
   };
 
-  // open my modal for making events!
-  open() {
-    let modal = this.modalService.open(MakeComponent);
-    modal.componentInstance.userInfo = this.userData;
+  // open my modal for making events or other stuff!
+  open(modalContent?: any): void {
+    if (modalContent) {
+      let modal = this.modalService.open(modalContent);
+    } else {
+      let modal = this.modalService.open(MakeComponent);
+      modal.componentInstance.userInfo = this.userData;
+    }
   }
   //open user interacted/created events from drop down
   openEvent(data: marker.MapMarker) {
-    var modalEvent;
+    let modalEvent;
     console.log(data);
     if (data.group.who == 'facebook') {
       this.mapService.getEvent(data.id)
@@ -97,7 +115,7 @@ export class MenuComponent implements OnInit {
             console.log('Event data recieved to modal');
           }
 
-        })
+        });
 
     } else {
       modalEvent = this.modalService.open(EventComponent);
@@ -126,7 +144,7 @@ export class MenuComponent implements OnInit {
 
           console.log('Logged IN');
         }
-      })
+      });
   }
 
   logout(): void {
@@ -137,21 +155,27 @@ export class MenuComponent implements OnInit {
   //checks to see if user is logged in already onInit, will get his data if so.
   setAuth(): void {
     if (this.authLogin.authorized()) {
-      this.authLogin.getUser(localStorage.getItem('facebookId') ||
-        this.userData.facebook)
-        .subscribe({
-          next: (value) => {
-            this.userData = value[0];
-            console.log(this.userData);
-            //set user events
-          },
-          error: (err: any) => console.log(err),
-          complete: () => {
-            this.authStatus = true;
-            console.log('Authorized already');
-          }
 
-        })
+      if (localStorage.getItem('facebookId') === undefined) {
+        this.authStatus = false;
+        this.logout();
+      } else {
+        this.authLogin.getUser(localStorage.getItem('facebookId') ||
+          this.userData.facebook)
+          .subscribe({
+            next: (value) => {
+              this.userData = value[0];
+              console.log(this.userData);
+              //set user events
+            },
+            error: (err: any) => console.log(err),
+            complete: () => {
+              this.authStatus = true;
+              console.log('Authorized already');
+            }
+
+          });
+      }
     } else {
       this.authStatus = false;
     }
@@ -162,14 +186,14 @@ export class MenuComponent implements OnInit {
   setMarkers(userId: string): void {
     // return first user match value/object
     let findGoing = (element: marker.RsvpSample) => {
-      return element.member.facebookId == userId
+      return element.member.facebookId == userId;
     };
 
-    let newMaybeMarkers: Array<marker.MapMarker> = [];
-    let newAttendingMarkers: Array<marker.MapMarker> = [];
-    let newUserMarkers: Array<marker.MapMarker> = [];
+    let newMaybeMarkers: marker.MapMarker[] = [];
+    let newAttendingMarkers: marker.MapMarker[] = [];
+    let newUserMarkers: marker.MapMarker[] = [];
 
-    for (var i in this.markers) {
+    for (let i in this.markers) {
 
       //console.log(this.markers[i]);
       if (this.markers[i].group.who == 'facebook') {
@@ -209,7 +233,7 @@ export class MenuComponent implements OnInit {
             this.setMarkers(this.userData.facebook);
           }
         }
-      })
+      });
   };
   searchSports(event: any) {
     let words: string = event.target.value;
@@ -218,7 +242,7 @@ export class MenuComponent implements OnInit {
     this.returnedEvents = [];
 
     if (words.length >= 2) {
-      for (var i in this.markers) {
+      for (let i in this.markers) {
         let search1 =
           this.markers[i].group.name.toLowerCase().search(words.toLowerCase());
         let search2 =
@@ -237,7 +261,7 @@ export class MenuComponent implements OnInit {
   //find my sports by name and sort map; doesn't make database call.
   sortSports(sports?: string) {
 
-    for (var i in this.markers) {
+    for (let i in this.markers) {
       if (!sports) {
         this.markers[i].options.visible = true;
       } else if (this.markers[i].sport !== sports) {

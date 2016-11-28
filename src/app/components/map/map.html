@@ -1,20 +1,16 @@
-<sebm-google-map class="map-container" [latitude]="lat" [longitude]="lng" [zoom]="zoom"
-[disableDefaultUI]="false" [zoomControl]="false">
+<sebm-google-map class="map-container" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
 
 
-  <sebm-google-map-marker *ngFor="let m of markers; let i = index"
-   [latitude]="m.venue.lat"  [iconUrl]="iconMaker(m.group.who, m.sport)"
-   [longitude]="m.venue.lon" (markerClick)="openModalNow(m)"  [visible]="m.options.visible" [id]="i"
-  >
-  <sebm-google-map-info-window>
-   <h5>{{m.name}} - {{m.time | date: 'short'}}</h5>
-   <strong><p>Going: {{m.yes_rsvp_count}}, Maybe Going: {{m.maybe_rsvp_count}},
+  <sebm-google-map-marker *ngFor="let m of markers; let i = index" [latitude]="m.venue.lat" [iconUrl]="iconMaker(m.group.who, m.sport)" [longitude]="m.venue.lon" (markerClick)="openModalNow(m)" [openInfoWindow]="false" [visible]="m.options.visible" [id]="i">
+    <sebm-google-map-info-window>
+      <h5>{{m.name}} - {{m.time | date: 'short'}}</h5>
+      <strong><p>Going: {{m.yes_rsvp_count}}, Maybe Going: {{m.maybe_rsvp_count}},
     Address: {{m.venue?.address_1}}, Group: {{m.group?.name}}</p></strong>
-    <span *ngIf="m.rsvp_sample" class="image-info-window">
+      <span *ngIf="m.rsvp_sample" class="image-info-window">
       <img *ngFor='let b of m.rsvp_sample;'  class="image-window" [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
     </span>
 
- </sebm-google-map-info-window>
+    </sebm-google-map-info-window>
 
   </sebm-google-map-marker>
 

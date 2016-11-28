@@ -8,21 +8,20 @@ Map Service
 
 grabs event data from server and holds master list of sports.
 
-*/
+**/
 
 @Injectable()
 export class MapService {
 
   // list of sports to export
-  listSports: string[] = ["baseball", "football", "paddle", "soccer", "boxing",
-    "golf", "hockey", "fencing", "rugby", "bowling", "powerlifting", "darts", "fitness",
-    "tennis", "volleyball", "skateboard", "kickball", "bowling", "billiard",
-    "offroad", "diving", "ballet", "chess", "curling", "pingpong", "skiing", "iceskating", "skydiving",
-    "running", "hiking", "skating", "dance", "hockey", "yoga", "wrestling",
-    "squash", "swimming", "horseriding", "fishing", "billards",
-    "softball", "sailing", "skiing", "shooting", "bike", "hunting", 'archery',
-    'karting', 'atv', "karting", "kayak", 'climbing', 'snowboarding',
-    'cricket', 'motorcycle', 'rugby', 'judo', 'scuba', 'barre', 'atv', 'basketball',
+  listSports: string[] = ['baseball', 'football', 'paddle', 'soccer', 'boxing',
+    'golf', 'hockey', 'fencing', 'rugby', 'bowling', 'powerlifting', 'darts', 'fitness',
+    'tennis', 'volleyball', 'skateboard', 'kickball', 'bowling', 'billiard',
+    'offroad', 'diving', 'ballet', 'chess', 'curling', 'pingpong', 'skiing', 'iceskating', 'skydiving',
+    'running', 'hiking', 'skating', 'dance', 'hockey', 'yoga', 'wrestling',
+    'squash', 'swimming', 'horseriding', 'fishing', 'billards',
+    'softball', 'sailing', 'skiing', 'shooting', 'bike', 'hunting', 'archery',
+    'karting', 'kayak', 'climbing', 'snowboarding', 'cricket', 'motorcycle', 'rugby', 'judo', 'scuba', 'barre', 'atv', 'basketball',
     'rowing', 'karate', 'mma', 'equestrian', 'gymnastics'
   ];
 
@@ -72,14 +71,14 @@ export class MapService {
   //return event map data from server
   getMapData(chosen?: string[]): Observable<marker.MapMarker[]> {
 
-    let sports: string[] = ["baseball", "football", "paddle", "soccer", "boxing",
-      "golf", "hockey", "fencing", "rugby", "bowling", "powerlifting", "darts", "fitness",
-      "tennis", "volleyball", "skateboard", "kickball", "bowling", "billiard",
-      "offroad", "diving", "ballet", "chess", "curling", "pingpong", "skiing", "iceskating", "skydiving",
-      "running", "hiking", "skating", "dance", "hockey", "yoga", "wrestling",
-      "squash", "swimming", "horseriding", "fishing", "billards",
-      "softball", "sailing", "skiing", "shooting", "bike", "hunting", 'archery',
-      'karting', 'atv', "karting", "kayak", 'climbing', 'snowboarding',
+    let sports: string[] = ['baseball', 'football', 'paddle', 'soccer', 'boxing',
+      'golf', 'hockey', 'fencing', 'rugby', 'bowling', 'powerlifting', 'darts', 'fitness',
+      'tennis', 'volleyball', 'skateboard', 'kickball', 'bowling', 'billiard',
+      'offroad', 'diving', 'ballet', 'chess', 'curling', 'pingpong', 'skiing', 'iceskating', 'skydiving',
+      'running', 'hiking', 'skating', 'dance', 'hockey', 'yoga', 'wrestling',
+      'squash', 'swimming', 'horseriding', 'fishing', 'billards',
+      'softball', 'sailing', 'skiing', 'shooting', 'bike', 'hunting', 'archery',
+      'karting', 'kayak', 'climbing', 'snowboarding',
       'cricket', 'motorcycle', 'rugby', 'judo', 'scuba', 'barre', 'atv', 'basketball',
       'rowing', 'karate', 'mma', 'equestrian', 'gymnastics'
     ];
@@ -99,11 +98,13 @@ export class MapService {
           }
 
           // get sport choice match to identify sport
-          for (var i = 0; i < sportChoices.length; i++) {
+          for (let i = 0; i < sportChoices.length; i++) {
             //add description if not existing or empty string
             if (response.description === undefined) {
-              response.description = "No Description Provided";
+              response.description = 'No Description Provided';
             }
+            // set yes_rsvp_count
+            response.yes_rsvp_count = response.rsvp_sample.length;
             //set default visibility
             response.options = {
               visible: true

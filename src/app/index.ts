@@ -18,23 +18,26 @@ such as marker(handles map events) and user(for user profiles)
 
 
 import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {routing, RootComponent} from './routes';
-import {AgmCoreModule } from 'angular2-google-maps/core';
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MapComponent} from './components/map/map';
-import {MakeComponent} from './components/make.modal/make';
-import {EventComponent} from './components/event.modal/event';
-import {HttpModule, JsonpModule } from '@angular/http';
-import {MapService} from './components/sharedservice/map.service';
+import {HttpModule } from '@angular/http';
+import {BrowserModule} from '@angular/platform-browser';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {MenuComponent} from './components/menu/menu';
-import {Ng2PaginationModule} from 'ng2-pagination';
 import {Ng2ArrayPipesModule, Ng2StringPipesModule } from 'angular-pipes';
+import {AgmCoreModule } from 'angular2-google-maps/core';
+import { LazyLoadImageModule } from 'ng2-lazyload-image';
+import {Ng2PaginationModule} from 'ng2-pagination';
+import { ResponsiveModule } from 'ng2-responsive';
+import {AuthService, Ng2UiAuthModule} from 'ng2-ui-auth';
+import {EventComponent} from './components/event.modal/event';
+import {MakeComponent} from './components/make.modal/make';
+import {MapComponent} from './components/map/map';
+import {MenuComponent} from './components/menu/menu';
 import {SearchArray} from './components/pipes/searchField';
+import {AuthLogin} from './components/sharedservice/authlogin.service';
 import {AuthUser} from './components/sharedservice/auth.user';
-import {AuthLogin} from './components/sharedservice/auth.login';
-import {Ng2UiAuthModule, AuthService} from 'ng2-ui-auth';
+import {MapService} from './components/sharedservice/map.service';
+import {RootComponent, routing} from './routes';
+
 
 
 @NgModule({
@@ -46,7 +49,9 @@ import {Ng2UiAuthModule, AuthService} from 'ng2-ui-auth';
     Ng2ArrayPipesModule,
     Ng2StringPipesModule,
     ReactiveFormsModule,
+    ResponsiveModule,
     Ng2PaginationModule,
+    LazyLoadImageModule,
     FormsModule,
     HttpModule,
     AgmCoreModule.forRoot({

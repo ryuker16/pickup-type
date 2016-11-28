@@ -22,7 +22,7 @@ export namespace user {
     lastName: string;
     friends?: Friend[];
     __v?: number;
-    userEvents?: Array<marker.MapMarker>;
+    userEvents?: marker.MapMarker[];
   }
 
 }

@@ -1,10 +1,49 @@
 body {
   background-color: lightgrey;
 }
+
 .pac-container {
-    z-index: 1051 !important;
+  z-index: 1051 !important;
 }
 
 .modal-dialog {
-max-width: 700px !important;
+  max-width: 700px !important;
+}
+
+.dropdown-item {
+  white-space: normal;
+}
+
+.dropdown-menu {
+  min-width: 300px !important;
+}
+
+.btn-orange {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff994c+0,ff330f+100 */
+  background: #ff994c;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ff994c 0%, #ff330f 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #ff994c 0%, #ff330f 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #ff994c 0%, #ff330f 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#ff994c', endColorstr='#ff330f', GradientType=0);
+  /* IE6-9 */
+  color: white;
+}
+
+.btn-orange:active, .btn-orange:active {
+  background: rgba(248, 80, 50, 1);
+  background: -moz-linear-gradient(-45deg, rgba(248, 80, 50, 1) 0%, rgba(241, 111, 92, 1) 50%, rgba(246, 41, 12, 1) 51%, rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(248, 80, 50, 1)), color-stop(50%, rgba(241, 111, 92, 1)), color-stop(51%, rgba(246, 41, 12, 1)), color-stop(71%, rgba(240, 47, 23, 1)), color-stop(100%, rgba(231, 56, 39, 1)));
+  background: -webkit-linear-gradient(-45deg, rgba(248, 80, 50, 1) 0%, rgba(241, 111, 92, 1) 50%, rgba(246, 41, 12, 1) 51%, rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%);
+  background: -o-linear-gradient(-45deg, rgba(248, 80, 50, 1) 0%, rgba(241, 111, 92, 1) 50%, rgba(246, 41, 12, 1) 51%, rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%);
+  background: -ms-linear-gradient(-45deg, rgba(248, 80, 50, 1) 0%, rgba(241, 111, 92, 1) 50%, rgba(246, 41, 12, 1) 51%, rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%);
+  background: linear-gradient(135deg, rgba(248, 80, 50, 1) 0%, rgba(241, 111, 92, 1) 50%, rgba(246, 41, 12, 1) 51%, rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#f85032', endColorstr='#e73827', GradientType=1);
+}
+
+.modal-content {
+  border: 3px solid #ec8a00;
 }

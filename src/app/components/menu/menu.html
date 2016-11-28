@@ -1,72 +1,139 @@
-<nav class="navbar navbar-dark bg-inverse fixed-top">
-  <a class="navbar-brand" href="/"> <img src="../../images/pickuplogosmall.png" width="40" height="40" class="d-inline-block align-top" alt="">
-  PickUp Sports</a>
-<ul class="nav navbar-nav" [ngSwitch]="authStatus">
-  <li class="nav-item active" [autoClose]="false" ngbDropdown #dropSport="ngbDropdown">
-    <p class="nav-link" ngbDropdownToggle>Choose a Sport <span class="sr-only"></span></p>
-    <ul class="dropdown-menu" (mouseleave)="dropSport.close()">
-      <h6  class="dropdown-header" (click)='sortSports(sport)'> Show All </h6>
-      <li class="dropdown-item" *ngFor="let sport of sports  | paginate: { id:'pageControlSport', itemsPerPage: 10, currentPage: p }" (click)="sortSports(sport)"><p>{{sport}}</p></li>
+<!-- desktop nav: mobile nav below the second comment: the rest of the child components like map at bottom -->
+<nav *showItDevice="['desktop']" class="navbar navbar-dark bg-inverse navbar-fixed-top">
+  <a class="navbar-brand" href="/"> <img src="../../images/pickuplogosmall.png" width="40" height="40" class="d-inline-block align-top" alt=""> PickUp Sports</a>
+  <ul class="nav navbar-nav" [ngSwitch]="authStatus">
+    <li class="nav-item active" [autoClose]="false" ngbDropdown #dropSport="ngbDropdown">
+      <p class="nav-link" ngbDropdownToggle>Choose a Sport <span class="sr-only"></span></p>
+      <ul class="dropdown-menu" (mouseleave)="dropSport.close()">
+        <h6 class="dropdown-header" (click)='sortSports(sport)'> Show All </h6>
+        <li class="dropdown-item" *ngFor="let sport of sports  | paginate: { id:'pageControlSport', itemsPerPage: 11, currentPage: p }" (click)="sortSports(sport)">
+          <p>{{sport}}</p>
+        </li>
         <pagination-controls id="pageControlSport" (pageChange)="p = $event;"></pagination-controls>
-    </ul>
-
-  </li>
-  <form ngbDropdown #search="ngbDropdown" [autoClose]="false"  class="form-inline  pull-lg-right">
-    <li class="nav-item  float-lg-right" *ngSwitchCase='true' >
-       <img [src]="userData ? userData.picture : '' " />
-     </li>
-    <li class="nav-item float-xs-right "*ngSwitchCase='true'  >
-     <p class="nav-link" >{{userData.displayName}}</p>
-    </li>
-    <li class="nav-item float-xs-right " ngbDropdown  *ngSwitchCase='true'>
-      <p class="nav-link" ngbDropdownToggle >Your Events<span class="sr-only"></span></p>
-      <ul class="dropdown-menu">
-        <h5 class="dropdown-header">Created Events</h5>
-        <li class="dropdown-item" *ngFor="let event of userMarkers" (click)="openEvent(event)">
-          <h5>{{event.name}}</h5>
-          <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br>
-          Address: {{event.venue.address_1}}
-          </p>
-        </li>
-        <h5 class="dropdown-header">Attending</h5>
-        <li class="dropdown-item" *ngFor="let event of userAttending" (click)="openEvent(event)">
-          <h5>{{event.name}}</h5>
-          <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br>
-          Address: {{event.venue.address_1}}
-          </p>
-        </li>
-        <h5 class="dropdown-header">Maybe Going</h5>
-        <li class="dropdown-item" *ngFor="let event of userMaybe" (click)="openEvent(event)">
-          <h5>{{event.name}}</h5>
-          <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br>
-          Address: {{event.venue.address_1}}
-          </p>
-        </li>
       </ul>
+
     </li>
-    <input #searchBar class="form-control nav-item" autocomplete="on"
-    pattern="^[a-zA-Z0-9]+$"  type="search" (keyup)="searchSports($event);
-    search.open();$event.stopPropagation();" placeholder="Search Events"  >
-  <ul class="dropdown-menu"  (mouseleave)="search.close()">
-    <li class="dropdown-item" *ngFor="let events of returnedEvents | paginate:
-     { id:'pageControlEvent', itemsPerPage: 10, currentPage: c }" (click)="openEvent(events)">
-     {{events.name}} <br> {{events.time | date:"short"}} </li>
-     <pagination-controls id='pageControlEvent' autoHide="true" (pageChange)="c = $event;"></pagination-controls>
-  </ul>
-  <button type="button" class="btn btn-primary nav-item" (click)="authStatus ? open() : login()">
+    <form ngbDropdown #search="ngbDropdown" [autoClose]="false" class="form-inline  pull-lg-right">
+      <li class="nav-item  float-sm-left" *ngSwitchCase='true'>
+        <img [src]="userData ? userData.picture : '' " />
+      </li>
+
+      <li class="nav-item float-sm-right " *ngSwitchCase='true'>
+        <p class="nav-link">{{userData.displayName}}</p>
+      </li>
+      <li class="nav-item float-sm-right " ngbDropdown *ngSwitchCase='true'>
+        <p class="nav-link" ngbDropdownToggle>Your Events<span class="sr-only"></span></p>
+        <ul class="dropdown-menu">
+          <h5 class="dropdown-header">Created Events</h5>
+          <li class="dropdown-item" *ngFor="let event of userMarkers" (click)="openEvent(event)">
+            <h5>{{event.name}}</h5>
+            <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br> Address: {{event.venue.address_1}}, Sport: {{event.sport}}
+            </p>
+          </li>
+          <h5 class="dropdown-header">Attending</h5>
+          <li class="dropdown-item" *ngFor="let event of userAttending" (click)="openEvent(event)">
+            <h5>{{event.name}}</h5>
+            <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br> Address: {{event.venue.address_1}}, Sport: {{event.sport}}
+            </p>
+          </li>
+
+        </ul>
+      </li>
+      <li #searchBar="ngbDropdown" [autoClose]="false" ngbDropdown class="nav-item float-sm-right ">
+        <input class="form-control nav-item" autocomplete="on" pattern="^[a-zA-Z0-9]+$" type="search" (keyup)="searchSports($event);
+    searchBar.open();$event.stopPropagation();" placeholder="Search Events/Sports">
+        <ul class="dropdown-menu" (mouseleave)="searchBar.close()">
+          <li class="dropdown-item" *ngFor="let events of returnedEvents | paginate:
+     { id:'pageControlEvent', itemsPerPage: 6, currentPage: c }" (click)="openEvent(events)">
+            <h6>{{events.name}}</h6>{{events.time | date:"short"}}, Sport: {{events.sport}} </li>
+          <pagination-controls id='pageControlEvent' autoHide="true" (pageChange)="c = $event;"></pagination-controls>
+        </ul>
+      </li>
+      <button type="button" class="btn btn-orange nav-item" (click)="authStatus ? open() : login()">
     Make New Game
   </button>
-  <button type="button" class="btn btn-primary nav-item" *ngSwitchCase='false' (click)="login()">
+      <button type="button" class="btn btn-orange nav-item" *ngSwitchCase='false' (click)="login()">
     login
   </button>
-  <button type="button" class="btn btn-primary nav-item" *ngSwitchCase='true' (click)="logout()">
+      <button type="button" class="btn btn-orange nav-item" *ngSwitchCase='true' (click)="logout()">
     Logout
   </button>
-  </form>
-
-</ul>
-
-
+    </form>
+  </ul>
 </nav>
-<template ngbModalContainer ></template>
+
+<!-- mobile nav: the rest of the child components like map at bottom -->
+<nav [ngSwitch]="authStatus" *showItDevice="['mobile', 'tablet']" class="navbar navbar-dark bg-inverse navbar-fixed-top">
+  <a class="navbar-brand " href="/"> <img src="../../images/pickuplogosmall.png" width="40" height="40" class="d-inline-block align-top" alt=""> PickUp Sports</a>
+
+  <div class="navbar-toggleable-xs" id="mobileNav">
+
+    <template #content let-c="close" let-d="dismiss">
+<div class="modal-header">
+<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+  <span aria-hidden="true">&times;</span>
+</button>
+<h4 class="modal-title">Events for {{userData.displayName}}</h4>
+</div>
+<div class="modal-body">
+  <ul class="list-group"  >
+    <h5 class="dropdown-header">Your Created Events</h5>
+    <li class="list-group-item" *ngFor="let event of userMarkers" (click)="openEvent(event)">
+      <h5>{{event.name}}</h5>
+      <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br> Address: {{event.venue.address_1}}, Sport: {{event.sport}}
+      </p>
+    </li>
+    <h5 class="dropdown-header">Attending</h5>
+    <li class="list-group-item" *ngFor="let event of userAttending" (click)="openEvent(event)">
+      <h5>{{event.name}}</h5>
+      <p>{{event.time | date:"short"}}, Going: {{event.yes_rsvp_count}}<br> Address: {{event.venue.address_1}}, Sport: {{event.sport}}
+      </p>
+    </li>
+
+  </ul>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
+</div>
+</template>
+    <ul class="nav navbar-nav">
+      <li class="nav-item float-sm-left" *ngSwitchCase='true'>
+        <p class="nav-link " (click)="open(content)">Your Events<span class="sr-only"></span></p>
+
+      </li>
+      <form>
+        <li #searchBar="ngbDropdown" [autoClose]="true" ngbDropdown class="nav-item float-sm-left inputMobileMenu">
+          <input class="form-control" autocomplete="on" pattern="^[a-zA-Z0-9]+$" type="search" (keyup)="searchSports($event);
+    searchBar.open();" placeholder="Search Events/Sports">
+          <ul class="dropdown-menu  scroll-menu" (mouseleave)="searchBar.close()">
+            <li class="scroll-menu" *ngFor="let events of returnedEvents | paginate:
+     { id:'pageControlEvent', itemsPerPage: 4, currentPage: c }" (click)="openEvent(events)">
+              <h6>{{events.name}}</h6>{{events.time | date:"short"}}, Sport: {{events.sport}} </li>
+            <pagination-controls id='pageControlEvent' autoHide="true" (pageChange)="c = $event;"></pagination-controls>
+          </ul>
+        </li>
+      </form>
+    </ul>
+  </div>
+</nav>
+
+
+<template ngbModalContainer></template>
 <fountain-map [markers]='markers' [userInfo]='userData' [status]='authStatus' (openModal)='openEvent($event)'> </fountain-map>
+
+<nav *showItDevice="['mobile', 'tablet']" [ngSwitch]="authStatus" class="navbar hide-bottom-menu navbar-fixed-bottom navbar-dark">
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-orange nav-item" (click)="authStatus ? open() : login()">
+    Make New Game
+  </button>
+    <button type="button" class="btn btn-orange nav-item" *ngSwitchCase='false' (click)="login()">
+    login
+  </button>
+    <button type="button" class="btn btn-orange nav-item" *ngSwitchCase='true' (click)="logout()">
+    Logout
+  </button>
+    <button type="button" class="btn btn-orange nav-item" (click)="logout()">
+    Guide
+  </button>
+  </div>
+</nav>

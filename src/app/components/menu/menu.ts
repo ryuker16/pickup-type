@@ -1,26 +1,53 @@
+// Imports
 import {
   Component, OnInit
 } from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
+// Modal Components
 import {EventComponent} from '../event.modal/event';
 import {MakeComponent} from '../make.modal/make';
-import {AuthLogin} from '../sharedservice/authlogin.service';
-import {marker} from '../sharedservice/interfaceClass/marker';
-import {user} from '../sharedservice/interfaceClass/user';
+//Interfaces
+import {marker} from '../interface/marker';
+import {user} from '../interface/user';
+//Services
 import {MapService} from '../sharedservice/map.service';
+import {AuthLogin} from '../sharedservice/authlogin.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
+// default event data that gmaps requires before loading our real data
 const fakeEvent = require('./fakeevent.json');
 
 
 /**
-Menu component is the parent component to everything: the stateful component
-that passes data to it's stateless child components. Right now pass map data to
-map component(recieved via @Outputs).
+* Menu component is the parent component to everything: the stateful component
+* that passes data to it's stateless child components. Right now passes map
+*   data to map component(recieved via their @Inputs).
+*
+* Services: Services are located in shared services folder
+*
+* AuthLogin - handles user authentication
+* MapService - handles Map data recieved from server and triggers event modal
+* NgbModal - used to open/create boostrap modals from event.modal & make.modal
+*
+* Interfaces: namespaces containing types; in interface folder
+*
+* marker for event related data
+* user for user data
+*
+* other interfaces are such as google map related or login related are loaded *  typings globally
+*
+* Child Components: in components folder
 
-Ng-Switch used to activate wether profile is shown/user logged in depending on
-authStatus variable.
-
-Used NG2-ui-bootstrap with the bootstrap 4 css.
+* Event Component modal - modal for showing event data
+* Make Component modal - modal for making events via form
+* Map Component - builds google maps and recieves needed data via Menu Component
+*
+*
+*
+* Ng-Switch used to activate wether profile is shown/user logged in depending on
+* authStatus variable.
+*
+* Used NG2-ui-bootstrap with the bootstrap 4 css.
 */
 
 
@@ -40,10 +67,11 @@ Used NG2-ui-bootstrap with the bootstrap 4 css.
     .inputMobileMenu {
       margin-left: 5px;
     }
-  
+
     `]
 })
 export class MenuComponent implements OnInit {
+
   // stored profile data.
   userData: user.UserProfile;
   // authStatus state determines if user profile is shown; false for no
@@ -51,30 +79,29 @@ export class MenuComponent implements OnInit {
   //copy of original set of markers retrieved from database
   firstMarkers: marker.MapMarker[];
   //google maps requires at least one marker identified before starting. Will be
-  //replaced
-  //markers: Array<marker.MapMarker>;
+  //replaced upon loading our events from server
   markers: marker.MapMarker[] = [fakeEvent];
-  //collapse menu
+  //collapse menu - optional
   isCollapsed: boolean = false;
-
   // search markers and push matches here
-
   returnedEvents: marker.MapMarker[] = [];
-
   //user made markers to list in profile.
   userMarkers: marker.MapMarker[];
   //user attending event markers to list in profile.
   userAttending: marker.MapMarker[];
   //user maybe attending markers to list in profile.
   userMaybe: marker.MapMarker[];
-  //list of sports
-  sports = this.mapService.listSports.sort();
+  //list of sport types sorted by alphabetical order
+  sports: Array<string> = this.mapService.listSports.sort();
 
   constructor(private mapService: MapService, private authLogin: AuthLogin,
     private modalService: NgbModal) {
   }
 
-  ngOnInit() {
+  /**
+   * [ngOnInit description]
+   */
+  ngOnInit(): void {
     this.setAuth();
     this.setMarkersFirst();
   };

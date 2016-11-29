@@ -1,10 +1,16 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {marker} from '../sharedservice/interfaceClass/marker';
-import {user} from '../sharedservice/interfaceClass/user';
+import {marker} from '../interface/marker';
+import {user} from '../interface/user';
 import {MapService} from '../sharedservice/map.service';
 
-
+/**
+ *  Event modal - displays user or meetup.com events in popup modal
+ *
+ *  created when passed into menu component, it's a dynamicly created
+ *  outputs login and reload/reset map markers to Menu Component
+ *
+ */
 
 @Component({
   selector: 'modal-event',
@@ -42,19 +48,25 @@ export class EventComponent {
   @Input() model: marker.MapMarker;
   @Input() userInfo: user.UserProfile;
   @Input() status: boolean;
-  @Input() setMarkersFirst;
   @Output() login: EventEmitter<any> = new EventEmitter();
   @Output() resetMarkers: EventEmitter<any> = new EventEmitter();
 
+  /**
+   * [deleted determines if delete button is present if user created event]
+   * @type {Boolean}
+   */
   deleted: Boolean = false;
 
-  logMeIn() {
+  /**
+   * [logMeIn output request to log in user; status is updated locally when fired ]
+   */
+  logMeIn(): void {
     this.login.emit();
     this.status = true;
   }
 
 
-  makeMember(maybe?: boolean) {
+  makeMember(maybe?: boolean): marker.RsvpSample {
 
     let member: marker.RsvpSample = {
       //mtime: Date.now(),

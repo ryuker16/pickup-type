@@ -2,13 +2,13 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {marker} from '../sharedservice/interfaceClass/marker';
-import {user} from '../sharedservice/interfaceClass/user';
+import {marker} from '../interface/marker';
+import {user} from '../interface/user';
 
 /**
 map component
 
- Recieves markers for map via Input from it's parent(menu). The map service it uses relies on the module ng2-ui-maps that's still pretty limited compared to the angular 1 version. Hence all the extra work I have to do. For example,there are no options to modify an info window shows up or css
+ Recieves markers for map via Input from it's parent(menu). The map service it uses relies on the module ng2-ui-maps that's still pretty limited compared to the angular 1 version. Hence all the extra work I have to do.
 
 Default map configuration settings should go here(like latitude), more about map
 module here: https://ng2map.github.io/#/google-map

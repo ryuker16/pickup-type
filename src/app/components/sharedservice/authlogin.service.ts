@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/Observable';
 Auth login Service handles user/server authentication
 
 ** relies on AuthService(Sattelizer for Ng2) **
-** Used heavily by out chief parent component "MenuComponent" in menu.ts **
+** Used heavily by our chief parent component "MenuComponent" in menu.ts **
 
 I use ng-ui-auth which is basically a bad copy and paste job of Satttelizer. So
 authentication is modified a bit. Login will automatically detect if your logged
@@ -23,7 +23,7 @@ export class AuthLogin {
   constructor(private auth: AuthService, private http: Http) { }
 
   /**
-   * [extractData  extracts response]
+   * [extractData  extracts response body]
    * @param  {Response} res [response data]
    * @return {[any]}
    */
@@ -53,7 +53,7 @@ export class AuthLogin {
    * @return {[any]}
    */
   getPayload(): any {
-    this.auth.getPayload();
+    return this.auth.getPayload();
   }
   /**
    * [getUser get data and their events from our database]

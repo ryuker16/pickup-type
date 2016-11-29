@@ -8,18 +8,15 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = {
   module: {
-    loaders: [
-      {
+    loaders: [{
         test: /.json$/,
         loaders: [
           'json'
         ]
-      },
-      {
-          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-          loader: 'url-loader?limit=100000'
-      },
-      {
+      }, {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
+      }, {
         test: /\.css$/,
         loaders: ExtractTextPlugin.extract({
           fallbackLoader: 'style',
@@ -40,8 +37,7 @@ module.exports = {
         loaders: [
           'ts'
         ]
-      },
-      {
+      }, {
         test: /.html$/,
         loaders: [
           'html'
@@ -53,7 +49,8 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
-      template: conf.path.src('index.html')
+      template: conf.path.src('index.html'),
+      inject: true
     }),
     new webpack.ContextReplacementPlugin(
       /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
@@ -63,10 +60,16 @@ module.exports = {
       'process.env.NODE_ENV': '"production"'
     }),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {unused: true, dead_code: false, warnings: false} // eslint-disable-line camelcase
+      compress: {
+        unused: true,
+        dead_code: false,
+        warnings: false
+      } // eslint-disable-line camelcase
     }),
     new ExtractTextPlugin('index-[contenthash].css'),
-    new webpack.optimize.CommonsChunkPlugin({name: 'vendor'})
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    })
   ],
   postcss: () => [autoprefixer],
   output: {

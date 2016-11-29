@@ -2,8 +2,8 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup } from "@angular/forms";
 import {NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { MapsAPILoader } from 'angular2-google-maps/core';
-import {marker} from '../sharedservice/interfaceClass/marker';
-import {user} from '../sharedservice/interfaceClass/user';
+import {marker} from '../interface/marker';
+import {user} from '../interface/user';
 import {MapService} from '../sharedservice/map.service';
 
 

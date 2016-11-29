@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {marker} from '../sharedservice/interfaceClass/marker';
+import {marker} from '../interface/marker';
 import {Observable} from 'rxjs/Observable';
 
 /**

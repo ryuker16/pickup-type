@@ -1,8 +1,8 @@
 
 Pickup-type is an Angular 2/typescript conversion of the original Angular 1.5 version
-to Angular2 for Pick Up sports. Still a work in progress about 90% complete.
+to Angular2 for Pick Up sports. Still a work in progress about 87% complete.
 
-Version: 0.9.1
+Version: 0.8.8
 
 Live Alpha preview version here : http://52.11.14.57:4000/
 

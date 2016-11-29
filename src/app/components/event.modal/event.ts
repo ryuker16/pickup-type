@@ -65,8 +65,12 @@ export class EventComponent {
     this.status = true;
   }
 
-
-  makeMember(maybe?: boolean): marker.RsvpSample {
+  /**
+   * [makeMember makes member data to be pushed to server to join event]
+   * @param  {boolean}           maybe [maybe attending event status]
+   * @return {marker.RsvpSample}       [returns formated member data]
+   */
+  private makeMember(maybe?: boolean): marker.RsvpSample {
 
     let member: marker.RsvpSample = {
       //mtime: Date.now(),
@@ -86,8 +90,12 @@ export class EventComponent {
     return member;
   };
 
-
-  joinEvent(maybe: boolean, eventId: string) {
+  /**
+   * [joinEvent join event and push member info to server to add to event]
+   * @param {boolean} maybe   [maybe going status]
+   * @param {string}  eventId [event Id string]
+   */
+  joinEvent(maybe: boolean, eventId: string): void {
 
     let update = maybe ? this.makeMember(maybe) : this.makeMember();
 
@@ -111,7 +119,11 @@ export class EventComponent {
         }
       });
   }
-
+  /**
+   * [leaveEvent join event and push member info to server to leave event]
+   * @param {boolean} maybe   [maybe going status]
+   * @param {string}  eventId [event Id string]
+   */
   leaveEvent(maybe: boolean, eventId: string, userEvent: marker.MapMarker): void {
 
     let attending: marker.RsvpSample[] = [];
@@ -145,8 +157,11 @@ export class EventComponent {
         });
     }
   }
-
-  deleteEvent(eventId: string) {
+  /**
+   * [deleteEvent  delete event locally and on server]
+   * @param {string} eventId [event id string]
+   */
+  deleteEvent(eventId: string): void {
 
     this.mapService.deleteEvent(eventId)
       .subscribe({

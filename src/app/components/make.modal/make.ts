@@ -6,6 +6,13 @@ import {marker} from '../interface/marker';
 import {user} from '../interface/user';
 import {MapService} from '../sharedservice/map.service';
 
+/**
+ *    Make modal
+ *
+ *  modal opened in menu component to make new event via FormBuilder
+ *
+ *  TODO: needs validators for form finished
+ */
 
 
 @Component({
@@ -16,7 +23,6 @@ export class MakeComponent implements OnInit {
 
   // get user profiles
   @Input() userInfo: user.UserProfile;
-
   //find our search input to get google maps auto complete
   @ViewChild("searchPlace")
   public searchElementRef: ElementRef;
@@ -28,6 +34,7 @@ export class MakeComponent implements OnInit {
   eventForm: FormGroup;
   //form success
   formSubmitted: boolean = false;
+
 
   constructor(private mapService: MapService,
     private mapsAPILoader: MapsAPILoader,
@@ -47,8 +54,10 @@ export class MakeComponent implements OnInit {
 
   }
 
-  //adding the google map search bar to angular2-google-map
-  ngOnInit() {
+  /**
+   * [ngOnInit adding the google map search bar to angular2-google-map, sets listener to get results from gmap API]
+   */
+  ngOnInit(): void {
 
     this.formSubmitted = false;
     this.mapsAPILoader.load().then(() => {
@@ -65,9 +74,13 @@ export class MakeComponent implements OnInit {
     });
 
   }
-  // used to create event & mapMarker combing form data with venue
-  makeEvent(fv: any, ven: google.maps.places.PlaceResult): marker.MapMarker {
-
+  /**
+   * [makeEvent used to create event & mapMarker combing form data with venue]
+   * @param  {any}                            fv  [form values]
+   * @param  {google.maps.places.PlaceResult} ven [google map address results]
+   * @return {marker.MapMarker}                   [finished event]
+   */
+  private makeEvent(fv: any, ven: google.maps.places.PlaceResult): marker.MapMarker {
     return {
       venue: {
         lat: ven.geometry.location.lat(),
@@ -118,8 +131,12 @@ export class MakeComponent implements OnInit {
       options: { visible: true }
     };
   }
-
-  submitForm(formValues: any) {
+  /**
+   * `[submitForm submits form and creates event on locally after sending to
+   * server]`
+   * @param {any} formValues [form values for submission]
+   */
+  submitForm(formValues: any): void {
     let newEvent = this.makeEvent(formValues, this.place);
     this.formSubmitted = true;
     this.mapService.postEvent(newEvent)

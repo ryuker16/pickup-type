@@ -4,16 +4,19 @@ import {marker} from '../interface/marker';
 import {Observable} from 'rxjs/Observable';
 
 /**
-Map Service
-
-grabs event data from server and holds master list of sports.
-
-**/
+*Map Service
+*
+*Communicates with REST API for event data and holds master list of sports.
+*
+*/
 
 @Injectable()
 export class MapService {
 
-  // list of sports to export
+  /**
+   * [listSports list of sports to export]
+   * @type {string[]}
+   */
   listSports: string[] = ['baseball', 'football', 'paddle', 'soccer', 'boxing',
     'golf', 'hockey', 'fencing', 'rugby', 'bowling', 'powerlifting', 'darts', 'fitness',
     'tennis', 'volleyball', 'skateboard', 'kickball', 'bowling', 'billiard',
@@ -27,7 +30,11 @@ export class MapService {
 
   constructor(private http: Http) { }
 
-  //used to grab user data
+  /**
+   * [getEvent used to grab user data]
+   * @param  {string}          eventId [event string id]
+   * @return {Observable<any>}         [Response]
+   */
   getEvent(eventId: string): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -35,7 +42,11 @@ export class MapService {
     return this.http.get('http://52.11.14.57:4000/api/events/' + eventId, options)
       .map((res: Response) => res.json());
   }
-
+  /**
+   * [deleteEvent used to delete event from database]
+   * @param  {string}          eventId [event string id]
+   * @return {Observable<any>}         [Response]
+   */
   deleteEvent(eventId: string): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -43,7 +54,12 @@ export class MapService {
     return this.http.delete('http://52.11.14.57:4000/api/events/' + eventId, options)
       .map((res: Response) => res.json());
   }
-
+  /**
+   * [leaveEvent leave an event, removes user from event data]
+   * @param  {any}             event   [event data]
+   * @param  {string}          eventId [event id]
+   * @return {Observable<any>}         [response]
+   */
   leaveEvent(event: any, eventId: string): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -51,7 +67,12 @@ export class MapService {
     return this.http.put('http://52.11.14.57:4000/api/leave/' + eventId, JSON.stringify(event), options)
       .map((res: Response) => res.json());
   }
-
+  /**
+   * [joinEvent add user to event]
+   * @param  {marker.RsvpSample} member  [member to add]
+   * @param  {string}            eventId [event id string]
+   * @return {Observable<any>}           [response]
+   */
   joinEvent(member: marker.RsvpSample, eventId: string): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -59,7 +80,11 @@ export class MapService {
     return this.http.put('http://52.11.14.57:4000/api/events/' + eventId, JSON.stringify(member), options)
       .map((res: Response) => res.json());
   }
-
+  /**
+   * [postEvent create new event]
+   * @param  {marker.MapMarker} event [event to be created]
+   * @return {Observable<any>}        [response]
+   */
   postEvent(event: marker.MapMarker): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -67,8 +92,13 @@ export class MapService {
     return this.http.post('http://52.11.14.57:4000/api/events', JSON.stringify(event), options)
       .map((res: Response) => res.json());
   }
-
-  //return event map data from server
+  /**
+   * [getMapData return event map data from server, searches text to determines
+   * sport since meetup API doesn't tell you what sport type it is. User
+   * created events have sports already ]
+   * @param  {string[]}                       chosen [only find matching sports]
+   * @return {Observable<marker.MapMarker[]>}        [Observable array of events]
+   */
   getMapData(chosen?: string[]): Observable<marker.MapMarker[]> {
 
     let sports: string[] = ['baseball', 'football', 'paddle', 'soccer', 'boxing',
@@ -114,7 +144,7 @@ export class MapService {
 
             let search2 = response.description.toLowerCase().search(sportChoices[i].toLowerCase());
 
-            //find match to identify sports
+            //find match to identify sports -- if user created, sport type will //exist
             if (!response.sport) {
 
               if (search1 !=

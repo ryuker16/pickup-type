@@ -82,7 +82,6 @@ export class MapComponent {
   /**
    * [openModalNow: trigger on parent component menu to launch modal using *Output ]
    * @param  {marker.MapMarker} data [an event]
-   * @return {[void]}                [merely triggers Event on parent]
    */
   openModalNow(data: marker.MapMarker): void {
     this.openModal.emit(data);

@@ -99,14 +99,17 @@ export class MenuComponent implements OnInit {
   }
 
   /**
-   * [ngOnInit description]
+   * [ngOnInit checks login status and gets map data from our API]
    */
   ngOnInit(): void {
     this.setAuth();
     this.setMarkersFirst();
   };
 
-  // open my modal for making events or other stuff!
+  /**
+   * [open open my modal for making events or other stuff!]
+   * @param {any} modalContent [any modal component]
+   */
   open(modalContent?: any): void {
     if (modalContent) {
       let modal = this.modalService.open(modalContent);
@@ -115,10 +118,13 @@ export class MenuComponent implements OnInit {
       modal.componentInstance.userInfo = this.userData;
     }
   }
-  //open user interacted/created events from drop down
-  openEvent(data: marker.MapMarker) {
+  /**
+   * [openEvent open event for more details in modal]
+   * @param  {marker.MapMarker} data [event to pass to modal]
+   */
+  openEvent(data: marker.MapMarker): void {
     let modalEvent;
-    console.log(data);
+    //console.log(data);
     if (data.group.who == 'facebook') {
       this.mapService.getEvent(data.id)
         .subscribe({
@@ -156,7 +162,9 @@ export class MenuComponent implements OnInit {
   }
 
 
-  // login via authLogin Service
+  /**
+   * [login login via authLogin Service]
+   */
   login(): void {
     this.authLogin.loginFacebook()
       .subscribe({
@@ -173,13 +181,17 @@ export class MenuComponent implements OnInit {
         }
       });
   }
-
+  /**
+   * [logout logs out, sets authstatus]
+   */
   logout(): void {
     this.authLogin.logout();
     this.authStatus = false;
     localStorage.clear();
   }
-  //checks to see if user is logged in already onInit, will get his data if so.
+  /**
+   * [setAuth checks to see if user is logged in already onInit, will get his data if so]
+   */
   setAuth(): void {
     if (this.authLogin.authorized()) {
 
@@ -208,8 +220,10 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  //idenfify User Made events or user attending/maybe going events
-
+  /**
+   * [setMarkers idenfify User Made events then set user attending/maybe going events for user profile]
+   * @param {string} userId [user id string]
+   */
   setMarkers(userId: string): void {
     // return first user match value/object
     let findGoing = (element: marker.RsvpSample) => {
@@ -221,11 +235,8 @@ export class MenuComponent implements OnInit {
     let newUserMarkers: marker.MapMarker[] = [];
 
     for (let i in this.markers) {
-
-      //console.log(this.markers[i]);
       if (this.markers[i].group.who == 'facebook') {
         if (this.markers[i].group.facebookId === userId) {
-
           newUserMarkers.push(this.markers[i]);
         } else {
           let attending: any = this.markers[i].rsvp_sample.find(findGoing);
@@ -243,14 +254,16 @@ export class MenuComponent implements OnInit {
     console.log('User Events: ' + this.userAttending);
   };
 
-  // Get Markers for all sports once and set original marker events for reference
-  setMarkersFirst() {
+  /**
+   * [setMarkersFirst Get Markers for all sports once and set original marker
+   *  events for reference]
+   */
+  setMarkersFirst(): void {
     this.mapService.getMapData()
       .subscribe({
         next: (value) => {
           this.markers = value;
           this.firstMarkers = value;
-
           console.log(value);
         },
         error: (err: any) => console.log(err),
@@ -262,8 +275,13 @@ export class MenuComponent implements OnInit {
         }
       });
   };
-  searchSports(event: any) {
-    let words: string = event.target.value;
+
+  /**
+   * [searchSports sorts search bar results and return matching events]
+   * @param {any} searchEntry [search bar event triggered by key up]
+   */
+  searchSports(searchEntry: any): void {
+    let words: string = searchEntry.target.value;
     console.log(words);
 
     this.returnedEvents = [];
@@ -285,8 +303,12 @@ export class MenuComponent implements OnInit {
     }
 
   }
-  //find my sports by name and sort map; doesn't make database call.
-  sortSports(sports?: string) {
+  /**
+   * [sortSports find my sports by name in choosen sports; doesn't make API
+   *  call. Merely determines visibility ]
+   * @param  {string} sports [sport name]
+   */
+  sortSports(sports?: string): void {
 
     for (let i in this.markers) {
       if (!sports) {

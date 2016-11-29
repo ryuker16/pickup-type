@@ -1,6 +1,13 @@
 import {Injectable} from "@angular/core";
 import {CustomConfig} from 'ng2-ui-auth';
 
+/**
+ * AuthUser Service
+ *
+ *   Custom config for Sattelizer OAuth service which AuthLogin uses
+ *
+ *
+ */
 @Injectable()
 export class AuthUser extends CustomConfig {
   baseUrl = 'http://52.11.14.57:4000/';

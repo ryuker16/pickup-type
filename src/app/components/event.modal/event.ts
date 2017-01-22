@@ -14,7 +14,7 @@ import {MapService} from '../sharedservice/map.service';
 
 @Component({
   selector: 'modal-event',
-  template: require('./event.html'),
+  templateUrl: './event.html',
   styles: [`
     .modal-dialog {
     max-width: 700px !important;
@@ -28,6 +28,9 @@ import {MapService} from '../sharedservice/map.service';
     text-align: center;
     width: inherit;
     display: inline-block;
+  }
+  .image-window {
+    min-height: 80px;
   }
 
   div.btn-group-wrap {

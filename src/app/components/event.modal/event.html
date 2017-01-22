@@ -2,59 +2,71 @@
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
-  <h4  *ngIf="!deleted" class="modal-title">{{model.name}}</h4>
+  <h4 *ngIf="!deleted" class="modal-title">{{model.name}}</h4>
   <h3 *ngIf="deleted" class="modal-title"> {{model.name}} was deleted!</h3>
 </div>
 <div *ngIf="!deleted" class="modal-body">
   <div class="row">
     <div class="col-md-6">
-    <div>  <h6 class="infoText">Address:</h6> <a class="infoText" target="_blank"
-      [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon" > {{model.venue.address_1}}</a>
-    </div>
-      <div *ngIf="model.venue.city !== undefined" ><h6 class="infoText">City:</h6><p class="infoText"> {{model.venue.city}}</p></div>
-      <div ><h6 class="infoText">Venue:</h6><p class="infoText"> {{model.venue.name}}</p></div>
-      <div><h6 class="infoText">Host:</h6><p class="infoText"> {{model.group.name}}</p></div>
+      <div>
+        <h6 class="infoText">Address:</h6> <a class="infoText" target="_blank" [href]="'https://www.google.com/maps/dir/Current+Location/' + model.venue.lat + ',' + model.venue.lon"> {{model.venue.address_1}}</a>
+      </div>
+      <div *ngIf="model.venue.city !== undefined">
+        <h6 class="infoText">City:</h6>
+        <p class="infoText"> {{model.venue.city}}</p>
+      </div>
+      <div>
+        <h6 class="infoText">Venue:</h6>
+        <p class="infoText"> {{model.venue.name}}</p>
+      </div>
+      <div>
+        <h6 class="infoText">Host:</h6>
+        <p class="infoText"> {{model.group.name}}</p>
+      </div>
       <img class="img-fluid" [src]="model.group.group_photo ? model.group.group_photo.thumb_link :  ''">
       <div *ngIf="model.group.who === 'facebook'" class="btn-group " data-toggle="buttons">
-      <a target="_blank" role="button" [href]="'mailto:' + model.email"
-         class="btn btn-orange btn-sm">Email Host</a>
-      <a  *ngIf="model.phone !== undefined" role="button" [href]="'tel:' + model.phone"
-         class="btn btn-orange btn-sm ">Call Host</a>
+        <a target="_blank" role="button" [href]="'mailto:' + model.email" class="btn btn-orange btn-sm">Email Host</a>
+        <a *ngIf="model.phone !== undefined" role="button" [href]="'tel:' + model.phone" class="btn btn-orange btn-sm ">Call Host</a>
+      </div>
     </div>
-  </div>
     <div class="col-md-6">
-      <div ><h6 class="infoText">Type: {{model.sport}}</h6></div>
-      <div ><h6 class="infoText">Time:{{model.time | date: "short"}}</h6></div>
-      <div ><h6 class="infoText">Group:</h6><p class="infoText"> {{model.group.name}}</p></div>
-      <div ><h6 class="infoText">Created:</h6><p class="infoText"> {{model.created | date: "short"}}</p></div>
-      <div ><h6 class="infoText">Going:</h6><p class="infoText"> {{model.yes_rsvp_count}}</p></div>
+      <div>
+        <h6 class="infoText">Type: {{model.sport}}</h6></div>
+      <div>
+        <h6 class="infoText">Time:{{model.time | date: "short"}}</h6></div>
+      <div>
+        <h6 class="infoText">Group:</h6>
+        <p class="infoText"> {{model.group.name}}</p>
+      </div>
+      <div>
+        <h6 class="infoText">Created:</h6>
+        <p class="infoText"> {{model.created | date: "short"}}</p>
+      </div>
+      <div>
+        <h6 class="infoText">Going:</h6>
+        <p class="infoText"> {{model.yes_rsvp_count}}</p>
+      </div>
     </div>
   </div>
   <h6>Attendees:</h6>
   <span *ngIf="model.rsvp_sample" class="image-info-window">
-        <img *ngFor='let b of model.rsvp_sample;'  class="image-window" [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
+        <img *ngFor='let b of model.rsvp_sample;'  [title]="b.member ? b.member.name : '' "  class="image-window" [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
       </span>
 
 
   <div class="row btn-group-wrap">
     <div class="btn-group " data-toggle="buttons">
-    <a role="button" *ngIf="model.group.who !== 'facebook';" class="btn btn-orange " target="_blank" [href]="model.event_url" >RSVP at MeetUp.com</a>
+      <a role="button" *ngIf="model.group.who !== 'facebook';" class="btn btn-orange " target="_blank" [href]="model.event_url">RSVP at MeetUp.com</a>
 
-    <a target="_blank" role="button" [href]="'https://www.google.com/maps/dir/Current+Location/'
-     + model.venue.lat + ',' + model.venue.lon" *ngIf="model.group.who !== 'facebook';"
-       class="btn btn-orange ">Google Map</a>
-     </div>
+      <a target="_blank" role="button" [href]="'https://www.google.com/maps/dir/Current+Location/'
+     + model.venue.lat + ',' + model.venue.lon" *ngIf="model.group.who !== 'facebook';" class="btn btn-orange ">Google Map</a>
+    </div>
 
-      <div class="btn-group" data-toggle="buttons" *ngIf="model.group.who == 'facebook';">
-        <button type="button" class="btn btn-orange"
-         (click)='status ? joinEvent(false, model.id): logMeIn()'>Join</button>
-        <button type="button" class="btn btn-orange"
-         (click)='status ? leaveEvent(false, model.id, model): logMeIn()'>leave</button>
-         <button type="button" class="btn btn-orange"
-         *ngIf="status ? model.group.facebookId == userInfo.facebook : false"
-          (click)='deleteEvent(model.id)'
-         >Delete</button>
-         <a  target="_blank" role="button"  [href]="'https://www.google.com/maps/dir/Current+Location/'
+    <div class="btn-group" data-toggle="buttons" *ngIf="model.group.who == 'facebook';">
+      <button type="button" class="btn btn-orange" (click)='status ? joinEvent(false, model.id): logMeIn()'>Join</button>
+      <button type="button" class="btn btn-orange" (click)='status ? leaveEvent(false, model.id, model): logMeIn()'>leave</button>
+      <button type="button" class="btn btn-orange" *ngIf="status ? model.group.facebookId == userInfo.facebook : false" (click)='deleteEvent(model.id)'>Delete</button>
+      <a target="_blank" role="button" [href]="'https://www.google.com/maps/dir/Current+Location/'
           + model.venue.lat + ',' + model.venue.lon" class="btn btn-orange">Google Map</a>
     </div>
 

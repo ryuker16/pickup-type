@@ -7,7 +7,7 @@
       <strong><p>Going: {{m.yes_rsvp_count}}, Maybe Going: {{m.maybe_rsvp_count}},
     Address: {{m.venue?.address_1}}, Group: {{m.group?.name}}</p></strong>
       <span *ngIf="m.rsvp_sample" class="image-info-window">
-      <img *ngFor='let b of m.rsvp_sample;'  class="image-window" [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
+      <img *ngFor='let b of m.rsvp_sample;'  class="image-window" [title]="b.member ? b.member.name : '' " [src]="b.member_photo ? b.member_photo.thumb_link :  ''">
     </span>
 
     </sebm-google-map-info-window>

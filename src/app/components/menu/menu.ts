@@ -53,7 +53,7 @@ const fakeEvent = require('./fakeevent.json');
 
 @Component({
   selector: 'fountain-menu',
-  template: require('./menu.html'),
+  templateUrl: './menu.html',
   styles: [`
 
     .inputMobileNav {

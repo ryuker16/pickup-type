@@ -17,7 +17,7 @@ import {MapService} from '../sharedservice/map.service';
 
 @Component({
   selector: 'make-event',
-  template: require('./make.html'),
+  templateUrl: './make.html',
 })
 export class MakeComponent implements OnInit {
 

@@ -56,7 +56,7 @@ max-width: 45px;
 max-height: 45px;
 }
 `],
-  template: require('./map.html'),
+  templateUrl: './map.html',
 })
 export class MapComponent {
 

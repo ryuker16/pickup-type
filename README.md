@@ -4,7 +4,7 @@ to Angular2 for Pick Up sports. Still a work in progress about 87% complete.
 
 Version: 0.8.8
 
-Live Alpha preview version here : http://52.27.228.148:4000/
+Live Alpha preview version here : http://picksupsports.com/,  http://52.27.228.148:4000/
 
 Some features are disabled like removing/hiding events not 1 week away, Meetup API auto-updating or passed events.
 
